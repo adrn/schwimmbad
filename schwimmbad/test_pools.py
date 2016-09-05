@@ -1,6 +1,7 @@
 # Standard library
 from __future__ import division, print_function, absolute_import, unicode_literals
 import time
+import sys
 
 # Third-party
 import numpy as np
@@ -10,7 +11,7 @@ import pytest
 from .serial import SerialPool
 from .multiprocessing import MultiPool
 try:
-    from .mpi import MPIPool2
+    from .mpi import MPIPool, MPIPool2
     HAS_MPI = True
 except:
     HAS_MPI = False
@@ -43,7 +44,12 @@ def test_multi():
                     reason="Doesn't have MPI.")
 def test_mpi():
     for tasks in all_tasks:
-        pool = MPIPool2()
+        pool = MPIPool()
+
+        if not pool.is_master():
+            pool.wait()
+            sys.exit(0)
+
         results = pool.map(_function, tasks)
         pool.close()
 
