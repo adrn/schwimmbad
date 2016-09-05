@@ -54,4 +54,5 @@ def test_mpi():
         pool.close()
 
         assert np.allclose(results, [_function(x) for x in tasks])
-        print(results)
+
+    return
