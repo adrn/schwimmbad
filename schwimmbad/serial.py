@@ -32,6 +32,5 @@ class SerialPool(BasePool):
         """
         results = list(map(func, iterable))
         if callback is not None:
-            return list(map(callback, results))
-        else:
-            return results
+            map(callback, results)
+        return results

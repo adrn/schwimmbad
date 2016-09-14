@@ -65,11 +65,6 @@ class TestSerialPool(PoolTestBase):
     def setup(self):
         self.PoolClass = SerialPool
 
-    def test_wait_fail(self):
-        pool = self.PoolClass()
-        with pytest.raises(PoolError):
-            pool.wait()
-
 class TestMultiPool(PoolTestBase):
     def setup(self):
         self.PoolClass = MultiPool
