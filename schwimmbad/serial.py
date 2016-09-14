@@ -3,7 +3,6 @@ from __future__ import division, print_function, absolute_import, unicode_litera
 
 # Project
 from .pool import BasePool
-from .error import PoolError
 
 class SerialPool(BasePool):
 
@@ -14,9 +13,6 @@ class SerialPool(BasePool):
     @staticmethod
     def enabled():
         return True
-
-    def wait(self):
-        raise PoolError('SerialPool cannot be told to wait!')
 
     def map(self, function, iterable):
         return list(map(function, iterable))
