@@ -24,7 +24,6 @@ class BasePool(object):
     def is_worker(self):
         return self.rank != 0
 
-    @abc.abstractmethod
     def wait(self):
         return
 
