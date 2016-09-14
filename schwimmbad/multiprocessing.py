@@ -21,31 +21,29 @@ def _initializer_wrapper(actual_initializer, *rest):
 
 class MultiPool(Pool):
     """
-
     A modified version of :class:`multiprocessing.pool.Pool` that has better
     behavior with regard to ``KeyboardInterrupts`` in the :func:`map` method.
 
-    Author: Peter K. G. Williams <peter@newton.cx>
+    (Original author: Peter K. G. Williams <peter@newton.cx>)
 
-    :param processes: (optional)
+    Parameters
+    ----------
+    processes : int (optional)
         The number of worker processes to use; defaults to the number of CPUs.
-
-    :param initializer: (optional)
+    initializer : callable (optional)
         Either ``None``, or a callable that will be invoked by each worker
         process when it starts.
-
-    :param initargs: (optional)
+    initargs : iterable (optional)
         Arguments for *initializer*; it will be called as
         ``initializer(*initargs)``.
-
-    :param kwargs: (optional)
-        Extra arguments. Python 2.7 supports a ``maxtasksperchild`` parameter.
+    kwargs: (optional)
+        Extra arguments passed to the :class:`multiprocessing.pool.Pool`
+        superclass.
 
     """
     wait_timeout = 3600
 
-    def __init__(self, processes=None, initializer=None, initargs=(),
-                 **kwargs):
+    def __init__(self, processes=None, initializer=None, initargs=(), **kwargs):
         new_initializer = functools.partial(_initializer_wrapper, initializer)
         super(MultiPool, self).__init__(processes, new_initializer,
                                         initargs, **kwargs)
@@ -55,27 +53,38 @@ class MultiPool(Pool):
     def enabled():
         return True
 
-    def map(self, func, iterable, chunksize=None):
+    def map(self, func, iterable, chunksize=None, callback=None):
         """
-        Equivalent of ``map()`` built-in, without swallowing
+        Equivalent to the built-in ``map()`` function and
+        :meth:`multiprocessing.pool.Pool.map()`, without catching
         ``KeyboardInterrupt``.
 
-        :param func:
-            The function to apply to the items.
-
-        :param iterable:
-            An iterable of items that will have `func` applied to them.
+        Parameters
+        ----------
+        func : callable
+            The function or callable to apply to the items. This should accept
+            a single positional argument and return a single object.
+        iterable : iterable
+            An iterable of items that will have ``func`` applied to them.
+        callback : callable (optional)
+            An optional callback function that is called after the map'ped
+            function returns but before the results are returned. The
+            callback function is called on the master process so it is
+            safe to write to files from the callback function.
 
         """
+
         # The key magic is that we must call r.get() with a timeout, because
         # a Condition.wait() without a timeout swallows KeyboardInterrupts.
-        r = self.map_async(func, iterable, chunksize)
+        r = self.map_async(func, iterable, chunksize=chunksize, callback=callback)
 
         while True:
             try:
                 return r.get(self.wait_timeout)
+
             except multiprocessing.TimeoutError:
                 pass
+
             except KeyboardInterrupt:
                 self.terminate()
                 self.join()

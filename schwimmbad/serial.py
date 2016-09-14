@@ -14,5 +14,24 @@ class SerialPool(BasePool):
     def enabled():
         return True
 
-    def map(self, function, iterable):
-        return list(map(function, iterable))
+    def map(self, func, iterable, callback=None):
+        """
+        A wrapper around the built-in ``map()`` function to provide a
+        consistent interface with the other ``Pool`` classes.
+
+        Parameters
+        ----------
+        func : callable
+            The function to apply to the items.
+        iterable : iterable
+            An iterable of items that will have ``func`` applied to them.
+        callback : callable (optional)
+            An optional callback function that is called after the map'ped
+            function returns but before the results are returned.
+
+        """
+        results = list(map(func, iterable))
+        if callback is not None:
+            return list(map(callback, results))
+        else:
+            return results

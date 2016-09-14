@@ -51,6 +51,16 @@ class PoolTestBase(object):
 
         pool.close()
 
+    def test_map_callback(self):
+        pool = self._make_pool()
+
+        for tasks in self.all_tasks:
+            results = pool.map(_function, tasks, callback=callback)
+            for r1,r2 in zip(results, [_function(x) for x in tasks]):
+                assert isclose(r1, r2)
+
+        pool.close()
+
 class TestSerialPool(PoolTestBase):
     def setup(self):
         self.PoolClass = SerialPool
