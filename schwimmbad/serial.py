@@ -2,8 +2,8 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 
 # Project
-from . import log, VERBOSE
 from .pool import BasePool
+from .error import PoolError
 
 class SerialPool(BasePool):
 
@@ -16,7 +16,7 @@ class SerialPool(BasePool):
         return True
 
     def wait(self):
-        raise Exception('`SerialPool` told to wait!')
+        raise PoolError('SerialPool cannot be told to wait!')
 
     def map(self, function, iterable):
         return list(map(function, iterable))
