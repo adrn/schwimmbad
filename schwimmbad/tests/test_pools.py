@@ -1,18 +1,11 @@
 # Standard library
 from __future__ import division, print_function, absolute_import, unicode_literals
 import time
-import sys
-import os
 import random
 
-# Third-party
-import pytest
-
 # Project
-from ..error import PoolError
 from ..serial import SerialPool
 from ..multiprocessing import MultiPool
-from ..mpi import MPIPool
 try:
     from mpi4py import MPI
 except ImportError:
