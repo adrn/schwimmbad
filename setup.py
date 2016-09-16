@@ -17,6 +17,7 @@ setup(
     long_description="",
     package_data={"": ["LICENSE"]},
     include_package_data=True,
+    install_requires=["six"],
     classifiers=[
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
