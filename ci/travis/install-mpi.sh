@@ -16,3 +16,16 @@ Linux)
       ;;
   esac
   ;;
+#Darwin)
+#  brew update
+#  case $1 in
+#    mpich|openmpi) set -x;
+#      brew install $1
+#      ;;
+#    *)
+#      echo "Unknown MPI implementation:" $1
+#      exit 1
+#      ;;
+#  esac
+#  ;;
+esac
