@@ -64,7 +64,12 @@ and MPI at the switch of a command-line flag::
 Installation
 ------------
 
-The project is installable with::
+The easiest way to install is via `pip`::
+
+    pip install schwimmbad
+
+The project is also installable by cloning or downloading the source and using
+the standard::
 
     python setup.py install
 
