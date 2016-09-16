@@ -1,9 +1,9 @@
 language: python
 
 python:
-  - 2.7
-  - 3.3
-  - 3.4
+  # - 2.7
+  # - 3.3
+  # - 3.4
   - 3.5
 
 os: linux
@@ -29,4 +29,4 @@ before_script:
 
 script:
   - py.test
-  - mpiexec -n $P python $PWD/scripts/test_mpi.py
+  - cd ..; mpiexec -n $P python $PWD/scripts/test_mpi.py
