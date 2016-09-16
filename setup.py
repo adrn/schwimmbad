@@ -10,7 +10,7 @@ setup(
     version='v0.1',
     author="Adrian Price-Whelan",
     author_email="adrn@princeton.edu",
-    packages=["schwimmbad"],
+    packages=["schwimmbad", "schwimmbad.tests"],
     url="https://github.com/adrn/schwimmbad",
     license="MIT",
     description="A common interface for multiprocessing pools.",
