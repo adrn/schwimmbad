@@ -1,5 +1,8 @@
 #! /usr/bin/env python
 
+# Release to pypi with:
+# python setup.py sdist upload
+
 # Standard library
 import sys
 import os
