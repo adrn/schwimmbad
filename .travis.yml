@@ -6,9 +6,27 @@ python:
   - 3.4
   - 3.5
 
+os: linux
+dist: trusty
+sudo: required
+
+env:
+  matrix:
+    - MPI=mpich
+    - MPI=openmpi
+
+before_install:
+  - sh ci/travis/install-mpi.sh $MPI
+
 install:
   - pip install six
   - pip install pytest
+  - pip install cython
+  - pip install mpi4py
+
+before_script:
+  - if [[ "$MPI" == "mpich" ]]; then P=2; else P=5; fi
 
 script:
   - py.test
+  - mpiexec -n $P python $PWD/scripts/test_mpi.py
