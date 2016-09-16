@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Contributions by:
 - Peter K. G. Williams
