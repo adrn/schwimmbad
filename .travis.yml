@@ -23,10 +23,11 @@ install:
   - pip install pytest
   - pip install cython
   - pip install mpi4py
+  - pip install -vvv .
 
 before_script:
   - if [[ "$MPI" == "mpich" ]]; then P=2; else P=5; fi
 
 script:
   - py.test
-  - cd ..; mpiexec -n $P python scripts/test_mpi.py
+  - mpiexec -n $P python $PWD/scripts/test_mpi.py
