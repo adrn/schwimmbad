@@ -15,8 +15,8 @@ Example
 -------
 
 If you can write your code following the
-[MapReduce](https://en.wikipedia.org/wiki/MapReduce) programming model, you can
-trivially parallelize it using *The Schwimmbad*. For example, if you can
+`MapReduce <https://en.wikipedia.org/wiki/MapReduce>`_ programming model, you
+can trivially parallelize it using *The Schwimmbad*. For example, if you can
 structure your code so that a 'worker' function operates on elements from a list
 of tasks, like this::
 
