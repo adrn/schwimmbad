@@ -2,6 +2,7 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 import time
 import sys
+import os
 import random
 
 # Third-party
@@ -11,11 +12,11 @@ import pytest
 from ..error import PoolError
 from ..serial import SerialPool
 from ..multiprocessing import MultiPool
+from ..mpi import MPIPool
 try:
-    from ..mpi import MPIPool, MPIPool2
-    HAS_MPI = True
-except:
-    HAS_MPI = False
+    from mpi4py import MPI
+except ImportError:
+    MPI = None
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
@@ -68,19 +69,3 @@ class TestSerialPool(PoolTestBase):
 class TestMultiPool(PoolTestBase):
     def setup(self):
         self.PoolClass = MultiPool
-
-@pytest.mark.skipif(not HAS_MPI,
-                    reason="Doesn't have MPI.")
-class TestMPIPool(PoolTestBase):
-
-    def setup(self):
-        self.PoolClass = MPIPool
-
-    def _make_pool(self):
-        pool = self.PoolClass()
-
-        if not pool.is_master():
-            pool.wait()
-            sys.exit(0)
-
-        return pool
