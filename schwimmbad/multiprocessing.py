@@ -19,6 +19,15 @@ def _initializer_wrapper(actual_initializer, *rest):
     if actual_initializer is not None:
         actual_initializer(*rest)
 
+class CallbackWrapper(object):
+
+    def __init__(self, callback):
+        self.callback = callback
+
+    def __call__(self, tasks):
+        for task in tasks:
+            self.callback(task)
+
 class MultiPool(Pool):
     """
     A modified version of :class:`multiprocessing.pool.Pool` that has better
@@ -74,9 +83,15 @@ class MultiPool(Pool):
 
         """
 
+        if callback is None:
+            callbackwrapper = None
+        else:
+            callbackwrapper = CallbackWrapper(callback)
+
         # The key magic is that we must call r.get() with a timeout, because
         # a Condition.wait() without a timeout swallows KeyboardInterrupts.
-        r = self.map_async(func, iterable, chunksize=chunksize, callback=callback)
+        r = self.map_async(func, iterable, chunksize=chunksize,
+                           callback=callbackwrapper)
 
         while True:
             try:
