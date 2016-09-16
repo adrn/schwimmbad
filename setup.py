@@ -43,7 +43,7 @@ setup(
     url="https://github.com/adrn/schwimmbad",
     license="MIT",
     description="A common interface for parallel processing pools.",
-    long_description=rd("README.md"),
+    long_description=rd("README.rst"),
     package_data={"": ["LICENSE"]},
     include_package_data=True,
     install_requires=["six"],
