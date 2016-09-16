@@ -1,8 +1,10 @@
 The Schwimmbad
 ==============
 
-[![Build status](http://img.shields.io/travis/adrn/schwimmbad/master.svg?style=flat)](http://travis-ci.org/adrn/schwimmbad)
-[![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/adrn/schwimmbad/blob/master/LICENSE)
+.. image:: http://img.shields.io/travis/adrn/schwimmbad/master.svg?style=flat
+    :target: http://travis-ci.org/adrn/schwimmbad
+.. image:: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
+    :target: https://github.com/adrn/schwimmbad/blob/master/LICENSE
 
 A common interface to parallel processing pools.
 
@@ -12,10 +14,11 @@ by providing a common interface.
 Example
 -------
 
-If you can write your code following the [MapReduce](https://en.wikipedia.org/wiki/MapReduce)
-programming model, you can trivially parallelize it using *The Schwimmbad*. For example, if you can
-structure your code so that a 'worker' function operates on elements from a list of tasks, like
-this::
+If you can write your code following the
+[MapReduce](https://en.wikipedia.org/wiki/MapReduce) programming model, you can
+trivially parallelize it using *The Schwimmbad*. For example, if you can
+structure your code so that a 'worker' function operates on elements from a list
+of tasks, like this::
 
     def worker(task):
         # do something with the task!
@@ -28,8 +31,8 @@ this::
     if __name__ == "__main__":
         main()
 
-with a few added lines of code, you can make it runnable with `multiprocessing` and MPI at the
-switch of a command-line flag::
+with a few added lines of code, you can make it runnable with `multiprocessing`
+and MPI at the switch of a command-line flag::
 
     import schwimmbad
 
@@ -66,5 +69,14 @@ The project is installable with::
 Dependencies
 ------------
 
-* [six](https://pythonhosted.org/six/)
-* [mpi4py](https://mpi4py.readthedocs.io) (optional - needed for MPI pool support)
+* `six <https://pythonhosted.org/six/>`_
+* `mpi4py <https://mpi4py.readthedocs.io>`_ (optional - needed for MPI pool
+  support)
+
+License
+-------
+
+Copyright 2016 Adrian Price-Whelan.
+
+schwimmbad is free software made available under the MIT License. For details
+see the LICENSE file.
