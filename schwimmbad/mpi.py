@@ -8,7 +8,7 @@ except ImportError:
     MPI = None
 
 # Project
-from . import log, VERBOSE
+from . import log, _VERBOSE
 from .pool import BasePool
 
 class MPIPool(BasePool):
@@ -52,21 +52,21 @@ class MPIPool(BasePool):
         worker = self.comm.rank
         status = MPI.Status()
         while True:
-            log.log(VERBOSE, "Worker {0} waiting for task".format(worker))
+            log.log(_VERBOSE, "Worker {0} waiting for task".format(worker))
 
             task = self.comm.recv(source=self.master, tag=MPI.ANY_TAG, status=status)
 
             if task is None:
-                log.log(VERBOSE, "Worker {0} told to quit work".format(worker))
+                log.log(_VERBOSE, "Worker {0} told to quit work".format(worker))
                 break
 
             func, arg = task
-            log.log(VERBOSE, "Worker {0} got task {1} with tag {2}"
+            log.log(_VERBOSE, "Worker {0} got task {1} with tag {2}"
                     .format(worker, arg, status.tag))
 
             result = func(arg)
 
-            log.log(VERBOSE, "Worker {0} sending answer {1} with tag {2}"
+            log.log(_VERBOSE, "Worker {0} sending answer {1} with tag {2}"
                     .format(worker, result, status.tag))
 
             self.comm.ssend(result, self.master, status.tag)
@@ -91,7 +91,7 @@ class MPIPool(BasePool):
             if workerset and tasklist:
                 worker = workerset.pop()
                 taskid, task = tasklist.pop()
-                log.log(VERBOSE, "Sent task {0} to worker {1} with tag {2}"
+                log.log(_VERBOSE, "Sent task {0} to worker {1} with tag {2}"
                         .format(task[1], worker, taskid))
                 self.comm.send(task, dest=worker, tag=taskid)
 
@@ -106,7 +106,7 @@ class MPIPool(BasePool):
             result = self.comm.recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG, status=status)
             worker = status.source
             taskid = status.tag
-            log.log(VERBOSE, "Master received from worker {0} with tag {1}"
+            log.log(_VERBOSE, "Master received from worker {0} with tag {1}"
                     .format(worker, taskid))
 
             workerset.add(worker)

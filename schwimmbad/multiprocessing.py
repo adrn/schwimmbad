@@ -6,7 +6,7 @@ import multiprocessing
 from multiprocessing.pool import Pool
 
 # Project
-from . import log, VERBOSE
+from . import log, _VERBOSE
 
 def _initializer_wrapper(actual_initializer, *rest):
     """
