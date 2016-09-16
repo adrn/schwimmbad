@@ -11,6 +11,9 @@ except ImportError:
 from . import log, VERBOSE
 from .pool import BasePool
 
+def _dummy_callback(x):
+    pass
+
 class MPIPool(BasePool):
     """
     This implementation is based on the code here:
@@ -71,7 +74,7 @@ class MPIPool(BasePool):
 
             self.comm.ssend(result, self.master, status.tag)
 
-    def map(self, func, iterable):
+    def map(self, func, iterable, callback=None):
         """
         Evaluate a function at various points in parallel. Results are
         returned in the requested order (i.e. y[i] = f(x[i])).
@@ -81,6 +84,9 @@ class MPIPool(BasePool):
         if not self.is_master():
             self.wait()
             return
+
+        if callback is None:
+            callback = _dummy_callback
 
         workerset = self.workers.copy()
         tasklist = [(tid, (func, arg)) for tid, arg in enumerate(iterable)]
@@ -108,6 +114,8 @@ class MPIPool(BasePool):
             taskid = status.tag
             log.log(VERBOSE, "Master received from worker {0} with tag {1}"
                     .format(worker, taskid))
+
+            callback(result)
 
             workerset.add(worker)
             resultlist[taskid] = result
