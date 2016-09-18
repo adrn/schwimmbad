@@ -1,11 +1,10 @@
 # Standard library
 from __future__ import division, print_function, absolute_import, unicode_literals
 
-# Third-party
-try:
-    from mpi4py import MPI
-except ImportError:
-    MPI = None
+# On some systems mpi4py is available but broken we avoid crashes by importing
+# it only when an MPI Pool is explicitly created.
+# Still make it a global to avoid messing up other things.
+MPI = None
 
 # Project
 from . import log, _VERBOSE
@@ -14,6 +13,16 @@ from .pool import BasePool
 def _dummy_callback(x):
     pass
 
+def _import_mpi(quiet=False):
+    global MPI
+    try:
+        import mpi4py.MPI
+        MPI = mpi4py.MPI
+    except ImportError:
+        if not quiet:
+            # Re-raise with a more user-friendly error:
+            raise ImportError("Please install mpi4py")
+
 class MPIPool(BasePool):
     """
     This implementation is based on the code here:
@@ -21,6 +30,7 @@ class MPIPool(BasePool):
     """
 
     def __init__(self, comm=None):
+        _import_mpi()
 
         if comm is None:
             comm = MPI.COMM_WORLD
@@ -40,6 +50,8 @@ class MPIPool(BasePool):
 
     @staticmethod
     def enabled():
+        if MPI is None:
+            _import_mpi(quiet=True)
         if MPI is not None:
             if MPI.COMM_WORLD.size > 1:
                 return True
