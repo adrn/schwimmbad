@@ -31,7 +31,4 @@ class JoblibPool(BasePool):
         res = Parallel(*(self.args), **(self.kwargs))(
             dfunc(a) for a in iterable
         )
-        if callback is not None:
-            res = list(res)
-            list(map(callback, res))
-        return res
+        return self._call_callback(callback, res)
