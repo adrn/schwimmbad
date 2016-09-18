@@ -6,6 +6,7 @@ import random
 # Project
 from ..serial import SerialPool
 from ..multiprocessing import MultiPool
+from ..jl import JoblibPool
 try:
     from mpi4py import MPI
 except ImportError:
@@ -21,8 +22,6 @@ def _function(x):
     time.sleep(random.random()*4E-4 + 1E-4)
     return 42.01
 
-def callback(x):
-    assert isclose(x, 42.01)
 
 class PoolTestBase(object):
 
@@ -49,9 +48,16 @@ class PoolTestBase(object):
         pool = self._make_pool()
 
         for tasks in self.all_tasks:
-            results = pool.map(_function, tasks, callback=callback)
+
+            mylist = []
+            def _callback(x):
+                assert isclose(x, 42.01)
+                mylist.append(x)
+
+            results = pool.map(_function, tasks, callback=_callback)
             for r1,r2 in zip(results, [_function(x) for x in tasks]):
                 assert isclose(r1, r2)
+            assert len(mylist) == len(tasks)
 
         pool.close()
 
@@ -62,3 +68,7 @@ class TestSerialPool(PoolTestBase):
 class TestMultiPool(PoolTestBase):
     def setup(self):
         self.PoolClass = MultiPool
+
+class TestJoblibPool(PoolTestBase):
+    def setup(self):
+        self.PoolClass = JoblibPool
