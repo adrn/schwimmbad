@@ -39,3 +39,10 @@ class BasePool(object):
 
     def __exit__(self, *args):
         self.close()
+
+    def _call_callback(self, callback, generator):
+        if callback is None:
+            return generator
+        for element in generator:
+            callback(element)
+            yield element
