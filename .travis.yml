@@ -23,6 +23,7 @@ install:
   - pip install pytest
   - pip install cython
   - pip install mpi4py
+  - pip install joblib
   - pip install -vvv .
 
 before_script:

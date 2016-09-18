@@ -30,7 +30,8 @@ class SerialPool(BasePool):
             function returns but before the results are returned.
 
         """
-        results = list(map(func, iterable))
+        results = map(func, iterable)
         if callback is not None:
-            map(callback, results)
+            results = list(results)
+            list(map(callback, results))
         return results
