@@ -39,8 +39,12 @@ class PoolTestBase(object):
 
         for tasks in self.all_tasks:
             results = pool.map(_function, tasks)
+            count = 0
             for r1,r2 in zip(results, [_function(x) for x in tasks]):
                 assert isclose(r1, r2)
+                count += 1
+
+            assert count == len(tasks) # to make sure iterations through the loop happen!
 
         pool.close()
 

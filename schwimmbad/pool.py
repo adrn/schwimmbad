@@ -7,6 +7,11 @@ import six
 
 __all__ = ['BasePool']
 
+def _callback_wrapper(callback, generator):
+    for element in generator:
+        callback(element)
+        yield element
+
 @six.add_metaclass(abc.ABCMeta)
 class BasePool(object):
     """ A base class multiprocessing pool with a ``map`` method. """
@@ -43,6 +48,4 @@ class BasePool(object):
     def _call_callback(self, callback, generator):
         if callback is None:
             return generator
-        for element in generator:
-            callback(element)
-            yield element
+        return _callback_wrapper(callback, generator)
