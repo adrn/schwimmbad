@@ -12,8 +12,6 @@ Implementations of four different types of processing pools:
 
 """
 
-__version__ = "0.1.1"
-
 # Standard library
 import sys
 import logging
