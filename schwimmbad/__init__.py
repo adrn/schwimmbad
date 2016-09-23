@@ -33,6 +33,7 @@ def choose_pool(mpi=False, processes=1, **kwargs):
 
         pool = MPIPool(**kwargs)
         if not pool.is_master():
+            pool.wait()
             sys.exit(0)
 
         log.info("Running with MPI on {} cores".format(pool.size))
