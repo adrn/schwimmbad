@@ -31,7 +31,7 @@ else:
         return r
 
 # Remove the .dev for release
-VERSION = '0.2.0'
+VERSION = '0.2.1'
 
 # Indicates if this version is a release version
 RELEASE = 'dev' not in VERSION
