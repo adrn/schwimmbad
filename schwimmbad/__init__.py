@@ -3,6 +3,7 @@
 Contributions by:
 - Peter K. G. Williams
 - Júlio Hoffimann Mendes
+- Dan Foreman-Mackey
 
 Implementations of four different types of processing pools:
 
@@ -21,6 +22,7 @@ _VERBOSE = 5
 from .multiprocessing import MultiPool
 from .serial import SerialPool
 from .mpi import MPIPool
+from .jl import JoblibPool
 
 def choose_pool(mpi=False, processes=1, **kwargs):
     """
