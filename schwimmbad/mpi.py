@@ -57,7 +57,7 @@ class MPIPool(BasePool):
                 return True
         return False
 
-    def wait(self):
+    def wait(self, callback=None):
         """
         Make the workers listen to the master.
         """
@@ -85,6 +85,9 @@ class MPIPool(BasePool):
                     .format(worker, result, status.tag))
 
             self.comm.ssend(result, self.master, status.tag)
+
+        if callback is not None:
+            callback()
 
     def map(self, func, iterable, callback=None):
         """
