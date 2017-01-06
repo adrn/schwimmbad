@@ -112,8 +112,8 @@ class MPIPool(BasePool):
             if workerset and tasklist:
                 worker = workerset.pop()
                 taskid, task = tasklist.pop()
-                log.log(_VERBOSE, "Sent task {0} to worker {1} with tag {2}"
-                        .format(task[1], worker, taskid))
+                log.log(_VERBOSE, "Sent task %s to worker %s with tag %s",
+                        task[1], worker, taskid)
                 self.comm.send(task, dest=worker, tag=taskid)
 
             if tasklist:
@@ -127,8 +127,8 @@ class MPIPool(BasePool):
             result = self.comm.recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG, status=status)
             worker = status.source
             taskid = status.tag
-            log.log(_VERBOSE, "Master received from worker {0} with tag {1}"
-                    .format(worker, taskid))
+            log.log(_VERBOSE, "Master received from worker %s with tag %s",
+                    worker, taskid)
 
             callback(result)
 
