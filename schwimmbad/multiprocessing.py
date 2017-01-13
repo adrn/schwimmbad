@@ -56,7 +56,7 @@ class MultiPool(Pool):
         new_initializer = functools.partial(_initializer_wrapper, initializer)
         super(MultiPool, self).__init__(processes, new_initializer,
                                         initargs, **kwargs)
-        self.size = 0
+        self.size = self._processes
 
     @staticmethod
     def enabled():
