@@ -13,6 +13,9 @@ Implementations of four different types of processing pools:
 
 """
 
+__version__ = "0.3.dev"
+__author__ = "Adrian Price-Whelan <adrianmpw@gmail.com>"
+
 # Standard library
 import sys
 import logging
