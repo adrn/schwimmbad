@@ -31,7 +31,8 @@ else:
         return r
 
 # Remove the .dev for release
-VERSION = '0.3.dev'
+import schwimmbad
+VERSION = schwimmbad.__version__
 
 # Indicates if this version is a release version
 RELEASE = 'dev' not in VERSION
@@ -226,7 +227,7 @@ setup(
     license="MIT",
     description="A common interface for parallel processing pools.",
     long_description=rd("README.rst"),
-    package_data={"": ["LICENSE"]},
+    package_data={"": ["README.rst", "LICENSE"]},
     include_package_data=True,
     install_requires=["six"],
     classifiers=[
