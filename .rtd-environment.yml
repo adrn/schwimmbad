@@ -1,0 +1,8 @@
+name: schwimmbad
+
+dependencies:
+  - pytest
+  - cython
+  - mpi4py
+  - six
+  - joblib

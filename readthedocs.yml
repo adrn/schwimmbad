@@ -1,0 +1,5 @@
+conda:
+    file: .rtd-environment.yml
+
+formats:
+    - none
