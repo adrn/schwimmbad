@@ -1,5 +1,5 @@
 """
-Custom exceptions
+Custom exceptions.
 """
 
 class PoolError(Exception):

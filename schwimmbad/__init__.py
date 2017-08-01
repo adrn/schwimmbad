@@ -29,7 +29,21 @@ from .jl import JoblibPool
 
 def choose_pool(mpi=False, processes=1, **kwargs):
     """
-    Chooses between the different pools.
+    Choose between the different pools given options from, e.g., argparse.
+
+    Parameters
+    ----------
+    mpi : bool (optional)
+        Use the MPI processing pool, :class:`~schwimmbad.mpi.MPIPool`. By
+        default, ``False``, will use the :class:`~schwimmbad.serial.SerialPool`.
+    processes : int (optional)
+        Use the multiprocessing pool,
+        :class:`~schwimmbad.multiprocessing.MultiPool`, with this number of
+        processes. By default, ``processes=1``, will use the
+        :class:`~schwimmbad.serial.SerialPool`.
+    **kwargs
+        Any additional kwargs are passed in to the pool class initializer
+        selected by the arguments.
     """
 
     if mpi:
@@ -41,11 +55,11 @@ def choose_pool(mpi=False, processes=1, **kwargs):
             pool.wait()
             sys.exit(0)
 
-        log.info("Running with MPI on {} cores".format(pool.size))
+        log.info("Running with MPI on {0} cores".format(pool.size))
         return pool
 
     elif processes != 1 and MultiPool.enabled():
-        log.info("Running with MultiPool on {} cores".format(processes))
+        log.info("Running with MultiPool on {0} cores".format(processes))
         return MultiPool(processes=processes, **kwargs)
 
     else:

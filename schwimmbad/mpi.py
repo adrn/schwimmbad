@@ -10,6 +10,8 @@ MPI = None
 from . import log, _VERBOSE
 from .pool import BasePool
 
+__all__ = ['MPIPool']
+
 def _dummy_callback(x):
     pass
 
@@ -69,7 +71,8 @@ class MPIPool(BasePool):
         while True:
             log.log(_VERBOSE, "Worker {0} waiting for task".format(worker))
 
-            task = self.comm.recv(source=self.master, tag=MPI.ANY_TAG, status=status)
+            task = self.comm.recv(source=self.master, tag=MPI.ANY_TAG,
+                                  status=status)
 
             if task is None:
                 log.log(_VERBOSE, "Worker {0} told to quit work".format(worker))
@@ -124,7 +127,8 @@ class MPIPool(BasePool):
                 self.comm.Probe(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG)
 
             status = MPI.Status()
-            result = self.comm.recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG, status=status)
+            result = self.comm.recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG,
+                                    status=status)
             worker = status.source
             taskid = status.tag
             log.log(_VERBOSE, "Master received from worker %s with tag %s",

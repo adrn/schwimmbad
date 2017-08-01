@@ -5,8 +5,7 @@ import functools
 import multiprocessing
 from multiprocessing.pool import Pool
 
-# Project
-from . import log, _VERBOSE
+__all__ = ['MultiPool']
 
 def _initializer_wrapper(actual_initializer, *rest):
     """

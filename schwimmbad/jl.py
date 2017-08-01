@@ -11,7 +11,6 @@ from .pool import BasePool
 
 __all__ = ["JoblibPool"]
 
-
 class JoblibPool(BasePool):
 
     def __init__(self, *args, **kwargs):

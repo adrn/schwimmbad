@@ -4,6 +4,8 @@ from __future__ import division, print_function, absolute_import, unicode_litera
 # Project
 from .pool import BasePool
 
+__all__ = ['SerialPool']
+
 class SerialPool(BasePool):
 
     def __init__(self, **kwargs):
