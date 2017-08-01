@@ -4,3 +4,4 @@
 dist
 build
 .cache
+docs/_build
