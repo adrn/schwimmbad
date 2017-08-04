@@ -36,7 +36,7 @@ The documentation for ``schwimmbad`` is hosted on `Read the docs
 License
 -------
 
-Copyright 2016 Adrian Price-Whelan.
+Copyright 2016-2017 Adrian Price-Whelan and contributors.
 
 schwimmbad is free software made available under the MIT License. For details
 see the LICENSE file.
