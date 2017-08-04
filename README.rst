@@ -73,12 +73,14 @@ the standard::
 
     python setup.py install
 
-Dependencies
-------------
+Documentation
+-------------
 
-* `six <https://pythonhosted.org/six/>`_
-* `mpi4py <https://mpi4py.readthedocs.io>`_ (optional - needed for MPI pool
-  support)
+.. image:: https://readthedocs.org/projects/schwimmbad/badge/?version=latest
+    :target: http://schwimmbad.readthedocs.io/en/latest/?badge=latest
+
+The documentation for ``schwimmbad`` is hosted on `Read the docs
+<http://http://schwimmbad.readthedocs.io/en/stable>`_.
 
 License
 -------
