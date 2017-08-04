@@ -3,30 +3,37 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to The Schwimmbad
-=========================
+The Schwimmbad
+==============
 
 *Schwimmbad* provides a uniform interface to processing pools to enable
 switching easily between local development (e.g., serial processing or with
 `multiprocessing`) and deployment on a cluster or supercomputer (via, e.g.,
 MPI or JobLib).
 
-.. TODO: include RST source from README.rst
-
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     install
-    getting-started
-    api
 
-Examples / use cases
---------------------
+Getting started
+===============
+
+
+More examples / use cases
+-------------------------
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
 
+API documentation
+=================
+
+.. toctree::
+    :maxdepth: 1
+
+    api
 
 .. Indices and tables
 .. ==================
