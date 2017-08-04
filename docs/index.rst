@@ -79,11 +79,15 @@ we're now using a `context manager
 <https://en.wikibooks.org/wiki/Python_Programming/Context_Managers>`_ (using a
 Python ``with`` statement) to handle creating and *closing* the multiprocessing
 pool. With the exception of the :class:`~schwimmbad.serial.SerialPool`, all
-other pool classes need to be explicity closed after processing.
+other pool classes need to be explicity closed after processing. We could have
+also written::
+
+    pool = MultiPool()
+    values = list(pool.map(do_the_processing, data))
+    pool.close()
 
 See the examples listed below for demonstrations of using the
 :class:`~schwimmbad.mpi.MPIPool` and :class:`~schwimmbad.jl.JoblibPool`.
-
 
 More examples / use cases
 -------------------------

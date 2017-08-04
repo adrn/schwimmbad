@@ -68,10 +68,9 @@ The easiest way to install is via `pip`::
 
     pip install schwimmbad
 
-The project is also installable by cloning or downloading the source and using
-the standard::
-
-    python setup.py install
+See the `installation
+instructions <http://schwimmbad.readthedocs.io/en/latest/install.html>`_ in the
+`documentation <http://schwimmbad.readthedocs.io>`_ for more information.
 
 Documentation
 -------------
