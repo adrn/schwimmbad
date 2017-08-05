@@ -25,7 +25,7 @@ matrix:
     - python: 3.6
       env:
         - MPI=openmpi
-        - TEST_CMD='py.test --cov=schwimmbad'
+        - TEST_CMD='py.test --cov'
         - MPI_TEST_CMD='python -m coverage run'
         - RUN_COVERAGE=true
 
