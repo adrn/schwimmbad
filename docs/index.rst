@@ -98,6 +98,7 @@ More examples / use cases
     examples/mpi
     examples/joblib
     examples/script-demo
+    examples/advanced-demo
 
 
 API documentation
