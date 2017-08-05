@@ -49,11 +49,11 @@ With a few extra lines of code using Python's :mod:`argparse` module, we can add
 command-line flags to the script that allow us to choose the processing method
 when we run the script. With the specified arguments below, we can either (1)
 pass no flags, in which case the script is run in serial (with the
-:class:`~schwimmbad.serial.SerialPool`), (2) pass ``--ncores`` with an integer
-to specify the number of cores to run using Python's :mod:`multiprocessing`
-utilities (with the :class:`~schwimmbad.multiprocessing.MultiPool`), or (3)
-pass ``--mpi`` by itself to specify that we'd like to run with MPI (with the
-:class:`~schwimmbad.mpi.MPIPool`)::
+:class:`~schwimmbad.SerialPool`), (2) pass ``--ncores`` with an integer to
+specify the number of cores to run using Python's :mod:`multiprocessing`
+utilities (with the :class:`~schwimmbad.MultiPool`), or (3) pass ``--mpi`` by
+itself to specify that we'd like to run with MPI (with the
+:class:`~schwimmbad.MPIPool`)::
 
     if __name__ == "__main__":
         import schwimmbad

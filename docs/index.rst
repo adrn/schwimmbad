@@ -51,9 +51,9 @@ object, executes the function, returns, and carries on, all on the same
 processor core. If we can write our code in this style (using :func:`map`), we
 can easily swap in the ``Pool`` classes provided by ``schwimmbad`` to allow us
 to switch between various parallel processing frameworks. The easiest to
-understand is the :class:`~schwimmbad.serial.SerialPool`, as this is just a
+understand is the :class:`~schwimmbad.SerialPool`, as this is just a
 class-based wrapper of the built-in (serial) :func:`map` function. The same
-example above can be run with :class:`~schwimmbad.serial.SerialPool` by doing::
+example above can be run with :class:`~schwimmbad.SerialPool` by doing::
 
     from schwimmbad import SerialPool
 
@@ -66,7 +66,7 @@ The only difference here is we call the ``.map()`` *method* of the instantiated
 If we wanted to switch to using multiprocessing, using, for example, the Python
 built-in :mod:`multiprocessing` package to utilize multiple cores on the same
 processor, we can just swap out the pool definition to instead use the
-:class:`~schwimmbad.multiprocessing.MultiPool` class::
+:class:`~schwimmbad.MultiPool` class::
 
     from schwimmbad import MultiPool
 
@@ -78,7 +78,7 @@ above, but we've only changed the definition of the ``pool`` object. In detail,
 we're now using a `context manager
 <https://en.wikibooks.org/wiki/Python_Programming/Context_Managers>`_ (using a
 Python ``with`` statement) to handle creating and *closing* the multiprocessing
-pool. With the exception of the :class:`~schwimmbad.serial.SerialPool`, all
+pool. With the exception of the :class:`~schwimmbad.SerialPool`, all
 other pool classes need to be explicity closed after processing. We could have
 also written::
 
@@ -87,7 +87,7 @@ also written::
     pool.close()
 
 See the examples listed below for demonstrations of using the
-:class:`~schwimmbad.mpi.MPIPool` and :class:`~schwimmbad.jl.JoblibPool`.
+:class:`~schwimmbad.MPIPool` and :class:`~schwimmbad.JoblibPool`.
 
 More examples / use cases
 -------------------------
@@ -96,9 +96,9 @@ More examples / use cases
     :maxdepth: 1
 
     examples/mpi
-    examples/joblib
     examples/script-demo
     examples/advanced-demo
+.. examples/joblib
 
 
 API documentation
