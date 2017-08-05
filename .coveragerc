@@ -1,3 +1,5 @@
 [report]
 omit =
    schwimmbad/error.py
+   */python?.?/*
+   */site-packages/*
