@@ -26,9 +26,21 @@ def _import_mpi(quiet=False):
             raise ImportError("Please install mpi4py")
 
 class MPIPool(BasePool):
-    """
-    This implementation is based on the code here:
-    https://github.com/juliohm/HUM/blob/master/pyhum/utils.py#L24
+    """A processing pool that distributes tasks using MPI.
+
+    With this pool class, the master process distributes tasks to worker
+    processes using an MPI communicator. This pool therefore supports parallel
+    processing on large compute clusters and in environments with multiple
+    nodes or computers that each have many processor cores.
+
+    This implementation is inspired by @juliohm in `this module
+    <https://github.com/juliohm/HUM/blob/master/pyhum/utils.py#L24>`_
+
+    Parameters
+    ----------
+    comm : :class:`mpi4py.MPI.Comm` (optional)
+        An MPI communicator to distribute tasks with. If ``None``, this uses
+        ``MPI.COMM_WORLD`` by default.
     """
 
     def __init__(self, comm=None):
@@ -60,8 +72,9 @@ class MPIPool(BasePool):
         return False
 
     def wait(self, callback=None):
-        """
-        Make the workers listen to the master.
+        """Tell the workers to wait and listen for the master process. This is
+        called automatically when using :meth:`MPIPool.map` and doesn't need to
+        be called by the user.
         """
         if self.is_master():
             return
@@ -92,10 +105,34 @@ class MPIPool(BasePool):
         if callback is not None:
             callback()
 
-    def map(self, func, iterable, callback=None):
-        """
-        Evaluate a function at various points in parallel. Results are
-        returned in the requested order (i.e. y[i] = f(x[i])).
+    def map(self, worker, tasks, callback=None):
+        """Evaluate a function or callable on each task in parallel using MPI.
+
+        The callable, ``worker``, is called on each element of the ``tasks``
+        iterable. The results are returned in the expected order (symmetric with
+        ``tasks``).
+
+        Parameters
+        ----------
+        worker : callable
+            A function or callable object that is executed on each element of
+            the specified ``tasks`` iterable. This object must be picklable
+            (i.e. it can't be a function scoped within a function or a
+            ``lambda`` function). This should accept a single positional
+            argument and return a single object.
+        tasks : iterable
+            A list or iterable of tasks. Each task can be itself an iterable
+            (e.g., tuple) of values or data to pass in to the worker function.
+        callback : callable (optional)
+            An optional callback function (or callable) that is called with the
+            result from each worker run and is executed on the master process.
+            This is useful for, e.g., saving results to a file, since the
+            callback is only called on the master thread.
+
+        Returns
+        -------
+        results : list
+            A list of results from the output of each ``worker()`` call.
         """
 
         # If not the master just wait for instructions.
@@ -107,7 +144,7 @@ class MPIPool(BasePool):
             callback = _dummy_callback
 
         workerset = self.workers.copy()
-        tasklist = [(tid, (func, arg)) for tid, arg in enumerate(iterable)]
+        tasklist = [(tid, (worker, arg)) for tid, arg in enumerate(tasks)]
         resultlist = [None] * len(tasklist)
         pending = len(tasklist)
 
@@ -143,9 +180,7 @@ class MPIPool(BasePool):
         return resultlist
 
     def close(self):
-        """
-        Tell all the workers to quit work.
-        """
+        """ Tell all the workers to quit."""
         if self.is_worker():
             return
 

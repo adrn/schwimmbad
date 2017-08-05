@@ -39,10 +39,10 @@ class MultiPool(Pool):
     processes : int (optional)
         The number of worker processes to use; defaults to the number of CPUs.
     initializer : callable (optional)
-        Either ``None``, or a callable that will be invoked by each worker
-        process when it starts.
+        If specified, a callable that will be invoked by each worker process
+        when it starts.
     initargs : iterable (optional)
-        Arguments for *initializer*; it will be called as
+        Arguments for ``initializer``; it will be called as
         ``initializer(*initargs)``.
     kwargs: (optional)
         Extra arguments passed to the :class:`multiprocessing.pool.Pool`
@@ -69,16 +69,25 @@ class MultiPool(Pool):
 
         Parameters
         ----------
-        func : callable
-            The function or callable to apply to the items. This should accept
-            a single positional argument and return a single object.
-        iterable : iterable
-            An iterable of items that will have ``func`` applied to them.
+        worker : callable
+            A function or callable object that is executed on each element of
+            the specified ``tasks`` iterable. This object must be picklable
+            (i.e. it can't be a function scoped within a function or a
+            ``lambda`` function). This should accept a single positional
+            argument and return a single object.
+        tasks : iterable
+            A list or iterable of tasks. Each task can be itself an iterable
+            (e.g., tuple) of values or data to pass in to the worker function.
         callback : callable (optional)
-            An optional callback function that is called after the map'ped
-            function returns but before the results are returned. The
-            callback function is called on the master process so it is
-            safe to write to files from the callback function.
+            An optional callback function (or callable) that is called with the
+            result from each worker run and is executed on the master process.
+            This is useful for, e.g., saving results to a file, since the
+            callback is only called on the master thread.
+
+        Returns
+        -------
+        results : list
+            A list of results from the output of each ``worker()`` call.
 
         """
 
