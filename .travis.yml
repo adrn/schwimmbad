@@ -1,8 +1,8 @@
 language: python
 
 python:
-  - 2.7
-  - 3.5
+  # - 2.7
+  # - 3.5
   - 3.6
 
 os: linux
@@ -46,10 +46,11 @@ before_script:
 
 script:
   - $TEST_CMD
+  - echo $MPI_TEST_CMD
   - $MPI_TEST_CMD $PWD/scripts/test_mpi.py
 
 after_script:
   - if [ "$RUN_COVERAGE" = true ] ; then
-  -     python -m coverage combine
-  -     coveralls
-  - fi
+        python -m coverage combine
+        coveralls
+    fi
