@@ -1,0 +1,4 @@
+[report]
+source = schwimmbad
+omit =
+   schwimmbad/error.py
