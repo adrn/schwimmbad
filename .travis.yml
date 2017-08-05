@@ -2,18 +2,31 @@ language: python
 
 python:
   - 2.7
-  - 3.3
-  - 3.4
   - 3.5
+  - 3.6
 
 os: linux
 dist: trusty
 sudo: required
 
 env:
+  global:
+    - TEST_CMD='py.test'
+    - MPI_TEST_CMD='mpiexec -n $P python'
+    - the_world_is_flat=false
   matrix:
     - MPI=mpich
     - MPI=openmpi
+
+matrix:
+  include:
+
+    # Do a coverage test in Python 2.
+    - python: 3.6
+      env:
+        - TEST_CMD='py.test --cov=schwimmbad'
+        - MPI_TEST_CMD='mpiexec -n $P python -m coverage run'
+        - RUN_COVERAGE=true
 
 before_install:
   - sh ci/travis/install-mpi.sh $MPI
@@ -21,14 +34,22 @@ before_install:
 install:
   - pip install six
   - pip install pytest
+  - pip install pytest-cov
   - pip install cython
   - pip install mpi4py
   - pip install joblib
+  - pip install coveralls
   - pip install -vvv .
 
 before_script:
   - if [[ "$MPI" == "mpich" ]]; then P=2; else P=5; fi
 
 script:
-  - py.test
-  - mpiexec -n $P python $PWD/scripts/test_mpi.py
+  - $TEST_CMD
+  - $MPI_TEST_CMD $PWD/scripts/test_mpi.py
+
+after_script:
+  - if [ "$RUN_COVERAGE" = true ] ; then
+  -     python -m coverage combine
+  -     coveralls
+  - fi
