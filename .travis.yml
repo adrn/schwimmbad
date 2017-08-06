@@ -50,7 +50,7 @@ script:
   - mpiexec -n $P $MPI_TEST_CMD $PWD/scripts/test_mpi.py
 
 after_success:
+  # python -m coverage combine;
   - if [ "$RUN_COVERAGE" = true ] ; then
-        # python -m coverage combine;
         coveralls;
     fi
