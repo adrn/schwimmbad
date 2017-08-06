@@ -25,8 +25,8 @@ matrix:
     - python: 3.6
       env:
         - MPI=openmpi
-        - TEST_CMD='py.test --cov'
-        - MPI_TEST_CMD='python -m coverage run'
+        - TEST_CMD='py.test --cov --cov-append'
+        - MPI_TEST_CMD='python -m coverage -a run'
         - RUN_COVERAGE=true
 
 before_install:
@@ -50,7 +50,7 @@ script:
   - mpiexec -n $P $MPI_TEST_CMD $PWD/scripts/test_mpi.py
 
 after_success:
-  # python -m coverage combine;
   - if [ "$RUN_COVERAGE" = true ] ; then
+        python -m coverage combine;
         coveralls;
     fi
