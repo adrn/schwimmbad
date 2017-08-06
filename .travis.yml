@@ -46,7 +46,7 @@ before_script:
   - if [[ "$MPI" == "mpich" ]]; then P=2; else P=5; fi
 
 script:
-  - mpiexec -n $P $MPI_TEST_CMD $PWD/scripts/test_mpi.py
+  - mpiexec -n $P $MPI_TEST_CMD $PWD/schwimmbad/tests/test_mpi.py
   - $TEST_CMD
 
 after_success:
