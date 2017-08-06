@@ -1,3 +1,4 @@
+.. _select-pool-command-line:
 
 ********************************************
 Selecting a pool with command-line arguments
