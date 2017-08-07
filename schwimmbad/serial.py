@@ -38,7 +38,7 @@ class SerialPool(BasePool):
         tasks : iterable
             A list or iterable of tasks. Each task can be itself an iterable
             (e.g., tuple) of values or data to pass in to the worker function.
-        callback : callable (optional)
+        callback : callable, optional
             An optional callback function (or callable) that is called with the
             result from each worker run and is executed on the master process.
             This is useful for, e.g., saving results to a file, since the

@@ -33,10 +33,10 @@ def choose_pool(mpi=False, processes=1, **kwargs):
 
     Parameters
     ----------
-    mpi : bool (optional)
+    mpi : bool, optional
         Use the MPI processing pool, :class:`~schwimmbad.mpi.MPIPool`. By
         default, ``False``, will use the :class:`~schwimmbad.serial.SerialPool`.
-    processes : int (optional)
+    processes : int, optional
         Use the multiprocessing pool,
         :class:`~schwimmbad.multiprocessing.MultiPool`, with this number of
         processes. By default, ``processes=1``, will use the

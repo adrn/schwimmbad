@@ -32,19 +32,19 @@ class MultiPool(Pool):
     A modified version of :class:`multiprocessing.pool.Pool` that has better
     behavior with regard to ``KeyboardInterrupts`` in the :func:`map` method.
 
-    (Original author: Peter K. G. Williams <peter@newton.cx>)
+    (Original author: `Peter K. G. Williams <peter@newton.cx>`_)
 
     Parameters
     ----------
-    processes : int (optional)
+    processes : int, optional
         The number of worker processes to use; defaults to the number of CPUs.
-    initializer : callable (optional)
+    initializer : callable, optional
         If specified, a callable that will be invoked by each worker process
         when it starts.
-    initargs : iterable (optional)
+    initargs : iterable, optional
         Arguments for ``initializer``; it will be called as
         ``initializer(*initargs)``.
-    kwargs: (optional)
+    kwargs:
         Extra arguments passed to the :class:`multiprocessing.pool.Pool`
         superclass.
 
@@ -78,7 +78,7 @@ class MultiPool(Pool):
         tasks : iterable
             A list or iterable of tasks. Each task can be itself an iterable
             (e.g., tuple) of values or data to pass in to the worker function.
-        callback : callable (optional)
+        callback : callable, optional
             An optional callback function (or callable) that is called with the
             result from each worker run and is executed on the master process.
             This is useful for, e.g., saving results to a file, since the
