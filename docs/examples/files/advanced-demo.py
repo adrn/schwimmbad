@@ -10,7 +10,6 @@ class Worker(object):
         c = 2*a*b - b**2
         return c
 
-    # @classmethod
     def callback(self, result):
         with open(self.output_path, 'a') as f:
             f.write("{0}\n".format(result))
