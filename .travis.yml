@@ -26,7 +26,8 @@ matrix:
       env:
         - MPI=openmpi
         - TEST_CMD='py.test --cov --cov-append'
-        - MPI_TEST_CMD='coverage run -a'
+        # - MPI_TEST_CMD='coverage run -a' # if we can get coverage working...
+        - MPI_TEST_CMD='python'
         - RUN_COVERAGE=true
 
 before_install:
