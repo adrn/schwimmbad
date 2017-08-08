@@ -9,10 +9,10 @@ import sys
 
 import pytest
 
-# Project
-from . import TEST_MPI
-from .test_pools import _function, isclose
-from ..mpi import MPIPool, MPI
+# Use full imports so we can run this with mpiexec externally
+from schwimmbad.tests import TEST_MPI
+from schwimmbad.tests.test_pools import _function, isclose
+from schwimmbad.mpi import MPIPool, MPI
 
 def _callback(x):
     pass
