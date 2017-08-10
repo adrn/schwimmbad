@@ -4,6 +4,9 @@
 Installation
 ************
 
+.. image:: http://img.shields.io/pypi/v/schwimmbad.svg?style=flat
+        :target: https://pypi.python.org/pypi/schwimmbad/
+
 Dependencies
 ============
 

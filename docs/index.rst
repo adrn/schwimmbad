@@ -7,6 +7,9 @@
 The Schwimmbad
 **************
 
+.. image:: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
+    :target: https://github.com/adrn/schwimmbad/blob/master/LICENSE
+
 ``schwimmbad`` provides a uniform interface to parallel processing pools
 and enables switching easily between local development (e.g., serial processing
 or with :py:mod:`multiprocessing`) and deployment on a cluster or supercomputer
@@ -89,17 +92,13 @@ also written::
 See the examples listed below for demonstrations of using the
 :class:`~schwimmbad.MPIPool` and :class:`~schwimmbad.JoblibPool`.
 
-More examples / use cases
--------------------------
+Examples
+--------
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
-    examples/mpi
-    examples/script-demo
-    examples/advanced-demo
-.. examples/joblib
-
+    examples/index
 
 API documentation
 =================
@@ -108,9 +107,3 @@ API documentation
     :maxdepth: 1
 
     api
-
-.. Indices and tables
-.. ==================
-.. * :ref:`genindex`
-.. * :ref:`modindex`
-.. * :ref:`search`

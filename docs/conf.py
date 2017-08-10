@@ -17,7 +17,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
 from os.path import dirname, abspath
 import sys
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
@@ -79,6 +78,23 @@ todo_include_todos = True
 
 # Readthedocs.
 html_theme = "alabaster"
+
+html_theme_options = {
+    'github_user': 'adrn',
+    'github_repo': 'schwimmbad',
+    'travis_button': 'true',
+    'fixed_sidebar': 'true'
+}
+
+html_sidebars = {
+    '**': [
+        'about.html',
+        'navigation.html',
+        'relations.html',
+        'searchbox.html',
+        'donate.html',
+    ]
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
