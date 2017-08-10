@@ -10,7 +10,7 @@ The Schwimmbad
 
 ``schwimmbad`` provides a uniform interface to parallel processing pools
 and enables switching easily between local development (e.g., serial processing
-or with :py:mod:`multiprocessing`) and deployment on a cluster or supercomputer
+or with ``multiprocessing``) and deployment on a cluster or supercomputer
 (via, e.g., MPI or JobLib).
 
 Installation
