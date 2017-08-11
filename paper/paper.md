@@ -1,5 +1,5 @@
 ---
-title: 'schwimmbad: A uniform API to parallel processing pools in Python'
+title: 'schwimmbad: A uniform interface to parallel processing pools in Python'
 tags:
   - Python
   - multiprocessing
@@ -16,7 +16,7 @@ affiliations:
    index: 1
  - name: Sagan Fellow, University of Washington
    index: 2
-date: XX August 2017
+date: 11 August 2017
 bibliography: paper.bib
 ---
 
