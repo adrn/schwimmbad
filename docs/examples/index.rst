@@ -1,3 +1,5 @@
+.. module:: schwimmbad
+
 ********
 Examples
 ********
@@ -24,6 +26,33 @@ master process and 1 worker) using:
 .. code-block:: bash
 
     mpiexec -n 2 python mpi-demo.py
+
+Using JoblibPool
+================
+
+:class:`schwimmbad.JoblibPool` is a pool built using the `Parallel
+capabilities <https://pythonhosted.org/joblib/parallel.html>`_ of the `joblib
+<https://pythonhosted.org/joblib/>`_ module. To use this pool, first `install
+joblib <https://pythonhosted.org/joblib/installing.html>`_. Then use it like
+any other pool:
+
+.. code-block:: python
+
+    from schwimmbad import JoblibPool
+
+    with JoblibPool(4) as pool:
+        pool.map(expensive_code, iterator)
+
+One benefit of the :class:`JoblibPool` is that it provides a ``threading``
+back end that can be used to parallelize tasks that release the GIL without
+increasing the memory usage. If you have code that explicitly releases the GIL
+(using the ``with nogil`` Cython command, for example) you can parallelize it
+using the :class:`JoblibPool` as follows:
+
+.. code-block:: python
+
+    with JoblibPool(4, backend="threading") as pool:
+        pool.map(nogil_code, iterator)
 
 
 .. _select-pool-command-line:
