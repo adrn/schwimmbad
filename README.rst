@@ -3,15 +3,17 @@ The Schwimmbad
 
 .. image:: http://img.shields.io/travis/adrn/schwimmbad/master.svg?style=flat
     :target: http://travis-ci.org/adrn/schwimmbad
+
 .. image:: http://img.shields.io/pypi/v/schwimmbad.svg?style=flat
-        :target: https://pypi.python.org/pypi/schwimmbad/
+    :target: https://pypi.python.org/pypi/schwimmbad/
+
 .. image:: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
     :target: https://github.com/adrn/schwimmbad/blob/master/LICENSE
 
-A common interface to parallel processing pools.
-
-Enables easy switching between serial execution, `multiprocessing`, and MPI
-by providing a common interface.
+``schwimmbad`` provides a uniform interface to parallel processing pools
+and enables switching easily between local development (e.g., serial processing
+or with ``multiprocessing``) and deployment on a cluster or supercomputer
+(via, e.g., MPI or JobLib).
 
 Installation
 ------------

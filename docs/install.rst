@@ -4,6 +4,9 @@
 Installation
 ************
 
+.. image:: http://img.shields.io/pypi/v/schwimmbad.svg?style=flat
+        :target: https://pypi.python.org/pypi/schwimmbad/
+
 Dependencies
 ============
 
@@ -13,6 +16,14 @@ To run with MPI, you must have a compiled MPI library (e.g., `OpenMPI
 <https://www.open-mpi.org/>`_) and ``mpi4py``.
 To run with joblib, you must have ``joblib`` installed.
 Each of these dependencies is either ``pip`` or ``conda`` installable.
+
+With `conda`
+============
+
+To install with `conda <http://continuum.io/downloads>`_, use the
+`conda-forge <https://conda-forge.github.io/>`_ channel::
+
+    conda install -c conda-forge schwimmbad
 
 With `pip`
 ==========
