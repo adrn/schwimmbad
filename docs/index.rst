@@ -96,9 +96,9 @@ More examples / use cases
     :maxdepth: 1
 
     examples/mpi
+    examples/joblib
     examples/script-demo
     examples/advanced-demo
-.. examples/joblib
 
 
 API documentation
