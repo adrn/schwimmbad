@@ -33,7 +33,7 @@ Documentation
     :target: http://schwimmbad.readthedocs.io/en/latest/?badge=latest
 
 The documentation for ``schwimmbad`` is hosted on `Read the docs
-<http://http://schwimmbad.readthedocs.io/en/stable>`_.
+<http://schwimmbad.readthedocs.io/en/stable>`_.
 
 License
 -------
