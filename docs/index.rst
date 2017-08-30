@@ -19,6 +19,7 @@ or with :py:mod:`multiprocessing`) and deployment on a cluster or supercomputer
     :maxdepth: 1
 
     install
+    contributing
 
 Getting started
 ===============
