@@ -13,7 +13,7 @@ Implementations of four different types of processing pools:
 
 """
 
-__version__ = "0.3.dev"
+__version__ = "0.3.0"
 __author__ = "Adrian Price-Whelan <adrianmpw@gmail.com>"
 
 # Standard library
