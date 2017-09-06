@@ -37,7 +37,7 @@ In Python, the built-in ``multiprocessing`` package provides a ``Pool`` class
 for exactly this design case, but only supports distributing the tasks amongst
 multiple cores of a single processor. To extend to large cluster computing
 environments, other protocols are required, such as the Message Passing
-Interface (MPI; Forum 1994). ``schwimmbad`` provides new ``Pool`` classes for a
+Interface [MPI; @Forum1994]. ``schwimmbad`` provides new ``Pool`` classes for a
 number of parallel processing environments with a consistent interface. This
 enables easily switching between local development (e.g., serial processing
 or with Python's built-in ``multiprocessing``) and deployment on a cluster or
@@ -46,9 +46,9 @@ with a number of backends:
 
 * Serial processing: ``SerialPool``
 * ``Python`` standard-library ``multiprocessing``: ``MultiPool``
-* [``OpenMPI``](open-mpi.org) (Gabriel et al. 2004) and
-  [``mpich2``](https://www.mpich.org/) (Lusk et al. 1996) via the ``mpi4py``
-  package (Dalcin et al. 2005, 2008): ``MPIPool``
+* [``OpenMPI``](open-mpi.org) [@Gabriel2004] and
+  [``mpich2``](https://www.mpich.org/) [@Lusk1996] via the ``mpi4py``
+  package [@Dalcin2005; @Dalcin2008]: ``MPIPool``
 * [``joblib``](http://pythonhosted.org/joblib/): ``JoblibPool``
 
 All pool classes provide a ``.map()`` method to distribute tasks to a specified
