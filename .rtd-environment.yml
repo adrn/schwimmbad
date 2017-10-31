@@ -8,3 +8,4 @@ dependencies:
   - joblib
   - pip:
     - alabaster
+    - emcee
