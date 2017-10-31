@@ -30,7 +30,8 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.todo',
               'sphinx.ext.mathjax',
               'sphinx.ext.viewcode',
-              'sphinx.ext.napoleon']
+              'sphinx.ext.napoleon',
+              'matplotlib.sphinxext.plot_directive']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -102,6 +103,9 @@ html_sidebars = {
 html_static_path = ['_static']
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/3': None}
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+    'emcee': ('http://emcee.readthedocs.io/en/latest/', None)
+}
 
 html_show_sourcelink = False
