@@ -6,6 +6,7 @@ dependencies:
   - mpi4py
   - six
   - joblib
+  - matplotlib
   - pip:
     - alabaster
     - emcee
