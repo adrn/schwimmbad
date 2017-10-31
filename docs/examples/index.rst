@@ -54,6 +54,71 @@ using the :class:`JoblibPool` as follows:
     with JoblibPool(4, backend="threading") as pool:
         pool.map(nogil_code, iterator)
 
+Using MultiPool (with ``emcee``)
+================================
+
+The :class:`emcee.EnsembleSampler` class in `emcee
+<http://emcee.readthedocs.io/en/stable/>`_ supports ``multiprocessing`` in two
+ways: either with the ``n_threads`` keyword argument, or by specifying your own
+pool class. This can be any of the pool classes mentioned above, but as an
+example of this we'll use the :class:`MultiPool` class implemented in
+schwimmbad.
+
+To use ``emcee``, we'll need to define a probability function to sample from.
+For this demo, we'll just use a Gaussian with mean ``mean`` and variance
+``var`` specified as arguments to the (log-)probability function:
+
+.. code-block:: python
+
+    from schwimmbad import MultiPool
+    import emcee
+    import matplotlib.pyplot as plt
+
+    def ln_probability(p, mean, var):
+        x = p[0]
+        return -0.5 * (x-mean)**2 / var
+
+    # initial positions for the walkers
+    n_walkers = 16
+    p0 = np.random.uniform(0, 10, (n_walkers, 1))
+
+    with MultiPool() as pool:
+        sampler = emcee.EnsembleSampler(n_walkers, dim=1,
+                                        lnpostfn=ln_probability,
+                                        args=(5, 1.2),
+                                        pool=pool) # the important line
+
+        pos,_,_ = sampler.run_mcmc(p0, 500)
+        sampler.reset()
+        sampler.run_mcmc(p0, 1000)
+
+    plt.figure()
+    plt.hist(sampler.flatchain)
+
+.. plot::
+    :align: center
+
+    from schwimmbad import MultiPool
+    import emcee
+    import matplotlib.pyplot as plt
+
+    def ln_probability(p, mean, var):
+        x = p[0]
+        return -0.5 * (x-mean)**2 / var
+
+    # initial positions for the walkers
+    n_walkers = 16
+    p0 = np.random.uniform(0, 10, (n_walkers, 1))
+
+    sampler = emcee.EnsembleSampler(n_walkers, dim=1, lnpostfn=ln_probability,
+                                    args=(5, 1.2))
+
+    pos,_,_ = sampler.run_mcmc(p0, 500)
+    sampler.reset()
+    sampler.run_mcmc(p0, 1000)
+
+    plt.figure()
+    plt.hist(sampler.flatchain)
 
 .. _select-pool-command-line:
 
