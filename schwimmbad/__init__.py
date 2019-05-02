@@ -13,19 +13,23 @@ Implementations of four different types of processing pools:
 
 """
 
-__version__ = "0.4.dev"
+import logging
+import sys
+
+import pkg_resources
+
+from .jl import JoblibPool
+from .mpi import MPIPool
+from .multiprocessing import MultiPool
+from .serial import SerialPool
+
+__version__ = pkg_resources.require(__package__)[0].version
+
 __author__ = "Adrian Price-Whelan <adrianmpw@gmail.com>"
 
-# Standard library
-import sys
-import logging
 log = logging.getLogger(__name__)
 _VERBOSE = 5
 
-from .multiprocessing import MultiPool
-from .serial import SerialPool
-from .mpi import MPIPool
-from .jl import JoblibPool
 
 def choose_pool(mpi=False, processes=1, **kwargs):
     """

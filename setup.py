@@ -3,11 +3,11 @@
 # Release to pypi with:
 # python setup.py sdist upload
 
-# Standard library
-import sys
 import locale
 import os
 import subprocess
+# Standard library
+import sys
 import warnings
 
 try:
@@ -30,9 +30,9 @@ else:
         f.close()
         return r
 
-# Remove the .dev for release
-import schwimmbad
-VERSION = schwimmbad.__version__
+# Remove the .dev for release, this is the only place to change for new
+# versions:
+VERSION = "0.4.dev"
 
 # Indicates if this version is a release version
 RELEASE = 'dev' not in VERSION
