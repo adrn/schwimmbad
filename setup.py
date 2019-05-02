@@ -4,10 +4,10 @@
 # python setup.py sdist upload
 
 # Standard library
-import sys
 import locale
 import os
 import subprocess
+import sys
 import warnings
 
 try:
@@ -31,8 +31,7 @@ else:
         return r
 
 # Remove the .dev for release
-import schwimmbad
-VERSION = schwimmbad.__version__
+VERSION = "0.4.dev"
 
 # Indicates if this version is a release version
 RELEASE = 'dev' not in VERSION
