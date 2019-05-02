@@ -12,8 +12,9 @@ Implementations of four different types of processing pools:
     - SerialPool: A serial pool, which uses the built-in ``map`` function
 
 """
+import pkg_resources
 
-__version__ = "0.4.dev"
+__version__ = pkg_resources.require(__package__)[0].version
 __author__ = "Adrian Price-Whelan <adrianmpw@gmail.com>"
 
 # Standard library
