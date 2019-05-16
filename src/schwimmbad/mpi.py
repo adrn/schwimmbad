@@ -9,7 +9,9 @@ import traceback
 # it only when an MPI Pool is explicitly created.
 # Still make it a global to avoid messing up other things.
 MPI = None
-MPIPoolExecutor = None
+
+# It seems like it's ok to import this even if not run with MPI
+from mpi4py.futures import MPIPoolExecutor
 
 # Project
 from .pool import BasePool
@@ -21,7 +23,6 @@ def _dummy_callback(x):
 
 def _import_mpi(quiet=False, use_dill=False):
     global MPI
-    global MPIPoolExecutor
     try:
         from mpi4py import MPI as _MPI
 
@@ -245,33 +246,26 @@ def custom_starmap_helper(submit, worker, callback, iterable):
     return result_iterator()
 
 
-if MPI is not None:
+class MPIAsyncPool(MPIPoolExecutor):
+    """Note: run with something like
 
-    class MPIAsyncPool(MPIPoolExecutor):
-        """Note: run with something like
+    mpirun -n <ncores> python -m mpi4py.futures <script name>
+    """
 
-        mpirun -n <ncores> python -m mpi4py.futures <script name>
+    def starmap(self, fn, iterable, callback=None, **kwargs):
+        """Return an iterator equivalent to ``itertools.starmap(...)``.
+        Args:
+            fn: A callable that will take positional argument from iterable.
+            iterable: An iterable yielding ``args`` tuples to be used as
+                positional arguments to call ``fn(*args)``.
+            callback: A callable that is called on the result of each fn call.
+        Keyword Args:
+        Returns:
+            An iterator equivalent to ``itertools.starmap(fn, iterable)``
+            but the calls may be evaluated out-of-order.
+        Raises:
+            TimeoutError: If the entire result iterator could not be generated
+                before the given timeout.
+            Exception: If ``fn(*args)`` raises for any values.
         """
-
-        def starmap(self, fn, iterable, callback=None, **kwargs):
-            """Return an iterator equivalent to ``itertools.starmap(...)``.
-            Args:
-                fn: A callable that will take positional argument from iterable.
-                iterable: An iterable yielding ``args`` tuples to be used as
-                    positional arguments to call ``fn(*args)``.
-                callback: A callable that is called on the result of each fn call.
-            Keyword Args:
-            Returns:
-                An iterator equivalent to ``itertools.starmap(fn, iterable)``
-                but the calls may be evaluated out-of-order.
-            Raises:
-                TimeoutError: If the entire result iterator could not be generated
-                    before the given timeout.
-                Exception: If ``fn(*args)`` raises for any values.
-            """
-            return custom_starmap_helper(self.submit, fn, callback, iterable)
-
-else:
-
-    class MPIAsyncPool:
-        pass
+        return custom_starmap_helper(self.submit, fn, callback, iterable)
