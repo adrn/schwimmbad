@@ -1,5 +1,5 @@
 # type: ignore
-__all__ = ["MPIPool", "MPI"]
+__all__ = ["MPIPool", "MPI", "MPIAsyncPool"]
 
 import atexit
 import sys
@@ -32,6 +32,7 @@ def _import_mpi(quiet=False, use_dill=False):
         MPI = _MPI
 
         from mpi4py.futures import MPIPoolExecutor as tmp
+
         MPIPoolExecutor = tmp
 
     except ImportError:
@@ -212,7 +213,9 @@ class MPIPool(BasePool):
         for worker in self.workers:
             self.comm.send(None, worker, 0)
 
+
 # ---------------------------------------------------------------------------
+
 
 def custom_starmap_helper(submit, worker, callback, iterable):
     """This is a custom, stripped down version of ``_starmap_helper()`` from
@@ -243,10 +246,11 @@ def custom_starmap_helper(submit, worker, callback, iterable):
 
 
 if MPI is not None:
+
     class MPIAsyncPool(MPIPoolExecutor):
         """Note: run with something like
 
-            mpirun -n <ncores> python -m mpi4py.futures <script name>
+        mpirun -n <ncores> python -m mpi4py.futures <script name>
         """
 
         def starmap(self, fn, iterable, callback=None, **kwargs):
@@ -268,5 +272,6 @@ if MPI is not None:
             return custom_starmap_helper(self.submit, fn, callback, iterable)
 
 else:
+
     class MPIAsyncPool:
         pass
