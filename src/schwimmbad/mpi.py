@@ -236,6 +236,10 @@ def custom_starmap_helper(submit, worker, callback, iterable):
 
 
 class MPIAsyncPool(MPIPoolExecutor):
+    """Note: run with something like
+
+        mpirun -n <ncores> python -m mpi4py.futures <script name>
+    """
 
     def starmap(self, fn, iterable, callback=None, **kwargs):
         """Return an iterator equivalent to ``itertools.starmap(...)``.
