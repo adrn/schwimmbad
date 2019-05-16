@@ -252,6 +252,24 @@ class MPIAsyncPool(MPIPoolExecutor):
     mpirun -n <ncores> python -m mpi4py.futures <script name>
     """
 
+    def __init__(self, max_workers=None, comm=None, **kwargs):
+        super().__init__(max_workers=max_workers, **kwargs)
+
+        _import_mpi()
+
+        if comm is None:
+            comm = MPI.COMM_WORLD
+        self.comm = comm
+
+        self.master = 0
+        self.rank = self.comm.Get_rank()
+        self.size = self.comm.Get_size() - 1
+
+        if self.size == 0:
+            raise ValueError("Tried to create an MPI pool, but there "
+                             "was only one MPI process available. "
+                             "Need at least two.")
+
     def starmap(self, fn, iterable, callback=None, **kwargs):
         """Return an iterator equivalent to ``itertools.starmap(...)``.
         Args:
