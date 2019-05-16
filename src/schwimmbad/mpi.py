@@ -242,26 +242,31 @@ def custom_starmap_helper(submit, worker, callback, iterable):
     return result_iterator()
 
 
-class MPIAsyncPool(MPIPoolExecutor):
-    """Note: run with something like
+if MPI is not None:
+    class MPIAsyncPool(MPIPoolExecutor):
+        """Note: run with something like
 
-        mpirun -n <ncores> python -m mpi4py.futures <script name>
-    """
-
-    def starmap(self, fn, iterable, callback=None, **kwargs):
-        """Return an iterator equivalent to ``itertools.starmap(...)``.
-        Args:
-            fn: A callable that will take positional argument from iterable.
-            iterable: An iterable yielding ``args`` tuples to be used as
-                positional arguments to call ``fn(*args)``.
-            callback: A callable that is called on the result of each fn call.
-        Keyword Args:
-        Returns:
-            An iterator equivalent to ``itertools.starmap(fn, iterable)``
-            but the calls may be evaluated out-of-order.
-        Raises:
-            TimeoutError: If the entire result iterator could not be generated
-                before the given timeout.
-            Exception: If ``fn(*args)`` raises for any values.
+            mpirun -n <ncores> python -m mpi4py.futures <script name>
         """
-        return custom_starmap_helper(self.submit, fn, callback, iterable)
+
+        def starmap(self, fn, iterable, callback=None, **kwargs):
+            """Return an iterator equivalent to ``itertools.starmap(...)``.
+            Args:
+                fn: A callable that will take positional argument from iterable.
+                iterable: An iterable yielding ``args`` tuples to be used as
+                    positional arguments to call ``fn(*args)``.
+                callback: A callable that is called on the result of each fn call.
+            Keyword Args:
+            Returns:
+                An iterator equivalent to ``itertools.starmap(fn, iterable)``
+                but the calls may be evaluated out-of-order.
+            Raises:
+                TimeoutError: If the entire result iterator could not be generated
+                    before the given timeout.
+                Exception: If ``fn(*args)`` raises for any values.
+            """
+            return custom_starmap_helper(self.submit, fn, callback, iterable)
+
+else:
+    class MPIAsyncPool:
+        pass
