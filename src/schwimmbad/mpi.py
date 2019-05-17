@@ -247,9 +247,36 @@ def custom_starmap_helper(submit, worker, callback, iterable):
 
 
 class MPIAsyncPool(MPIPoolExecutor):
-    """Note: run with something like
+    """A processing pool that asynchronously distributes tasks using MPI.
 
-    mpirun -n <ncores> python -m mpi4py.futures <script name>
+    With this pool class, the master process distributes tasks to worker
+    processes using an MPI communicator. This pool therefore supports parallel
+    processing on large compute clusters and in environments with multiple
+    nodes or computers that each have many processor cores.
+
+    This class subclasses ``mpi4py.futures.MPIPoolExecutor`` but adds support
+    for specifying a callback function that is called from the rank 0 process
+    as soon as the worker function completes.
+
+    Note that, to use this pool with ``mpiexec`` or ``mpirun``, you must execute
+    your script with::
+
+        mpirun -n <ncores> python -m mpi4py.futures <script name>
+
+    See the `mpi4py.futures documentation
+    <https://mpi4py.readthedocs.io/en/stable/mpi4py.futures.html>`_ for more
+    information.
+
+    Parameters
+    ----------
+    max_workers : int, optional
+        The maximum number of worker processes to spawn.
+    comm : :class:`mpi4py.MPI.Comm`, optional
+        An MPI communicator to distribute tasks with. If ``None``, this uses
+        ``MPI.COMM_WORLD`` by default.
+    **kwargs
+        All other keyword arguments are passed to the
+        ``mpi4py.futures.MPIPoolExecutor`` initializer.
     """
 
     def __init__(self, max_workers=None, comm=None, **kwargs):
@@ -266,27 +293,73 @@ class MPIAsyncPool(MPIPoolExecutor):
         self.size = self.comm.Get_size() - 1
 
         if self.size == 0:
-            raise ValueError("Tried to create an MPI pool, but there "
-                             "was only one MPI process available. "
-                             "Need at least two.")
+            raise ValueError(
+                "Tried to create an MPI pool, but there "
+                "was only one MPI process available. "
+                "Need at least two."
+            )
 
-    def starmap(self, fn, iterable, callback=None, **kwargs):
-        """Return an iterator equivalent to ``itertools.starmap(...)``.
-        Args:
-            fn: A callable that will take positional argument from iterable.
-            iterable: An iterable yielding ``args`` tuples to be used as
-                positional arguments to call ``fn(*args)``.
-            callback: A callable that is called on the result of each fn call.
-        Keyword Args:
-        Returns:
-            An iterator equivalent to ``itertools.starmap(fn, iterable)``
-            but the calls may be evaluated out-of-order.
-        Raises:
-            TimeoutError: If the entire result iterator could not be generated
-                before the given timeout.
-            Exception: If ``fn(*args)`` raises for any values.
+    def starmap(self, worker, tasks, callback=None, **kwargs):
+        """The callable, ``worker``, is called on each element of the ``tasks``
+        iterable. The results are returned in the expected order (symmetric with
+        ``tasks``).
+
+        Parameters
+        ----------
+        worker : callable
+            A function or callable object that is executed on each element of
+            the specified ``tasks`` iterable. This object must be picklable
+            (i.e. it can't be a function scoped within a function or a
+            ``lambda`` function). This should accept a single positional
+            argument and return a single object.
+        tasks : iterable
+            A list or iterable of tasks. Each task can be itself an iterable
+            (e.g., tuple) of values or data to pass in to the worker function.
+        callback : callable, optional
+            An optional callback function (or callable) that is called with the
+            result from each worker run and is executed on the master process.
+            This is useful for, e.g., saving results to a file, since the
+            callback is only called on the master thread.
+
+        Returns
+        -------
+        results : iterator
+            An iterator equivalent to ``itertools.starmap(fn, iterable)``.
+            The calls may be evaluated out-of-order, but the results will always
+            come back in order.
         """
-        return custom_starmap_helper(self.submit, fn, callback, iterable)
+        return custom_starmap_helper(self.submit, worker, callback, tasks)
+
+    def map(self, worker, tasks, callback=None, **kwargs):
+        """The callable, ``worker``, is called on each element of the ``tasks``
+        iterable. The results are returned in the expected order (symmetric with
+        ``tasks``).
+
+        Parameters
+        ----------
+        worker : callable
+            A function or callable object that is executed on each element of
+            the specified ``tasks`` iterable. This object must be picklable
+            (i.e. it can't be a function scoped within a function or a
+            ``lambda`` function). This should accept a single positional
+            argument and return a single object.
+        tasks : iterable
+            A list or iterable of tasks. Each task can be itself an iterable
+            (e.g., tuple) of values or data to pass in to the worker function.
+        callback : callable, optional
+            An optional callback function (or callable) that is called with the
+            result from each worker run and is executed on the master process.
+            This is useful for, e.g., saving results to a file, since the
+            callback is only called on the master thread.
+
+        Returns
+        -------
+        results : iterator
+            An iterator equivalent to ``itertools.starmap(fn, iterable)``.
+            The calls may be evaluated out-of-order, but the results will always
+            come back in order.
+        """
+        return super().map(worker, tasks, callback=callback, **kwargs)
 
     def close(self):
         self.shutdown()
