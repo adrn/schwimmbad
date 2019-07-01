@@ -44,6 +44,7 @@ class MPIPool(BasePool):
     comm : :class:`mpi4py.MPI.Comm`, optional
         An MPI communicator to distribute tasks with. If ``None``, this uses
         ``MPI.COMM_WORLD`` by default.
+    use_dill: Set `True` to use `dill` serialization. Default is `False`.
     """
 
     def __init__(self, comm=None, use_dill=False):
