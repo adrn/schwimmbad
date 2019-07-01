@@ -43,6 +43,7 @@ install:
   - pip install coveralls
   - pip install alabaster
   - pip install -vvv .
+  - pip install dill
 
 before_script:
   - if [[ "$MPI" == "mpich" ]]; then P=2; else P=5; fi
