@@ -1,5 +1,6 @@
 # Standard library
 from __future__ import division, print_function, absolute_import, unicode_literals
+import dill
 
 # On some systems mpi4py is available but broken we avoid crashes by importing
 # it only when an MPI Pool is explicitly created.
@@ -21,7 +22,6 @@ def _import_mpi(quiet=False, use_dill=False):
         import mpi4py.MPI
         MPI = mpi4py.MPI
         if use_dill:
-            import dill
             MPI.pickle.__init__(dill.dumps, dill.loads)
     except ImportError:
         if not quiet:
