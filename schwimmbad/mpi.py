@@ -15,10 +15,13 @@ __all__ = ['MPIPool']
 def _dummy_callback(x):
     pass
 
-def _import_mpi(quiet=False):
+def _import_mpi(quiet=False, use_dill=False):
     global MPI
     try:
         import mpi4py.MPI
+        if use_dill:
+            import dill
+            MPI.pickle.__init__(dill.dumps, dill.loads)
         MPI = mpi4py.MPI
     except ImportError:
         if not quiet:
@@ -43,8 +46,8 @@ class MPIPool(BasePool):
         ``MPI.COMM_WORLD`` by default.
     """
 
-    def __init__(self, comm=None):
-        _import_mpi()
+    def __init__(self, comm=None, use_dill=False):
+        _import_mpi(use_dill=use_dill)
 
         if comm is None:
             comm = MPI.COMM_WORLD
