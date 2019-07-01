@@ -19,10 +19,10 @@ def _import_mpi(quiet=False, use_dill=False):
     global MPI
     try:
         import mpi4py.MPI
+        MPI = mpi4py.MPI
         if use_dill:
             import dill
             MPI.pickle.__init__(dill.dumps, dill.loads)
-        MPI = mpi4py.MPI
     except ImportError:
         if not quiet:
             # Re-raise with a more user-friendly error:
