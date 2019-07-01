@@ -19,10 +19,10 @@ def _dummy_callback(x):
 def _import_mpi(quiet=False, use_dill=False):
     global MPI
     try:
-        import mpi4py.MPI
-        MPI = mpi4py.MPI
+        from mpi4py import MPI as _MPI
         if use_dill:
-            MPI.pickle.__init__(dill.dumps, dill.loads)
+            _MPI.pickle.__init__(dill.dumps, dill.loads, dill.HIGHEST_PROTOCOL)
+        MPI = _MPI
     except ImportError:
         if not quiet:
             # Re-raise with a more user-friendly error:
