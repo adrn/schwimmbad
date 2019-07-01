@@ -40,10 +40,10 @@ install:
   - pip install cython
   - pip install mpi4py
   - pip install joblib
+  - pip install dill
   - pip install coveralls
   - pip install alabaster
   - pip install -vvv .
-  - pip install dill
 
 before_script:
   - if [[ "$MPI" == "mpich" ]]; then P=2; else P=5; fi
