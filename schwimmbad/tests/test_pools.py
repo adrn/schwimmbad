@@ -18,6 +18,12 @@ def _function(x):
     time.sleep(random.random()*4E-4 + 1E-4)
     return 42.01
 
+def _function2(x):
+    """
+    Returns the number 42.01
+    """
+    #time.sleep(random.random()*4E-4 + 1E-4)
+    return 42.01
 
 class PoolTestBase(object):
 
