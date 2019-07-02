@@ -17,7 +17,7 @@ from schwimmbad.mpi import MPIPool, MPI
 def _callback(x):
     pass
 
-@pytest.mark.skip(True, reason="WTF")
+#@pytest.mark.skip(True, reason="WTF")
 def test_mpi_with_dill():
     pool = MPIPool(use_dill=True)
 
