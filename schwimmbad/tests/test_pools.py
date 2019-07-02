@@ -18,6 +18,7 @@ def _function(x):
     time.sleep(random.random()*4E-4 + 1E-4)
     return 42.01
 
+
 class PoolTestBase(object):
 
     all_tasks = [[random.random() for i in range(1000)]]

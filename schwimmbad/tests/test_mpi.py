@@ -43,6 +43,5 @@ def test_mpi():
 
     pool.close()
 
-
 if __name__ == '__main__':
     test_mpi()
