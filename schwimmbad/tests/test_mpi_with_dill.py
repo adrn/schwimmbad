@@ -18,8 +18,8 @@ def _callback(x):
     pass
 
 @pytest.mark.skip(True, reason="WTF")
-def test_mpi():
-    pool = MPIPool()
+def test_mpi_with_dill():
+    pool = MPIPool(use_dill=True)
 
     pool.wait(lambda: sys.exit(0))
 
@@ -45,4 +45,4 @@ def test_mpi():
 
 
 if __name__ == '__main__':
-    test_mpi()
+    test_mpi_with_dill()
