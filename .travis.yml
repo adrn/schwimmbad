@@ -50,6 +50,7 @@ before_script:
 
 script:
   - mpiexec -n $P $MPI_TEST_CMD $PWD/schwimmbad/tests/test_mpi.py
+  - mpiexec -n $P $MPI_TEST_CMD $PWD/schwimmbad/tests/test_mpi_with_dill.py
   - $TEST_CMD
 
 after_success:
