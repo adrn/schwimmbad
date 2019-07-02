@@ -15,11 +15,14 @@ __all__ = ['MPIPool']
 def _dummy_callback(x):
     pass
 
-def _import_mpi(quiet=False):
+def _import_mpi(quiet=False, use_dill=False):
     global MPI
     try:
-        import mpi4py.MPI
-        MPI = mpi4py.MPI
+        from mpi4py import MPI as _MPI
+        if use_dill:
+            import dill
+            _MPI.pickle.__init__(dill.dumps, dill.loads, dill.HIGHEST_PROTOCOL)
+        MPI = _MPI
     except ImportError:
         if not quiet:
             # Re-raise with a more user-friendly error:
@@ -41,10 +44,11 @@ class MPIPool(BasePool):
     comm : :class:`mpi4py.MPI.Comm`, optional
         An MPI communicator to distribute tasks with. If ``None``, this uses
         ``MPI.COMM_WORLD`` by default.
+    use_dill: Set `True` to use `dill` serialization. Default is `False`.
     """
 
-    def __init__(self, comm=None):
-        _import_mpi()
+    def __init__(self, comm=None, use_dill=False):
+        _import_mpi(use_dill=use_dill)
 
         if comm is None:
             comm = MPI.COMM_WORLD

@@ -38,8 +38,9 @@ install:
   - pip install pytest
   - pip install pytest-cov
   - pip install cython
-  - pip install mpi4py
+  - pip install mpi4py>=3.0.0
   - pip install joblib
+  - pip install dill
   - pip install coveralls
   - pip install alabaster
   - pip install -vvv .
@@ -49,6 +50,7 @@ before_script:
 
 script:
   - mpiexec -n $P $MPI_TEST_CMD $PWD/schwimmbad/tests/test_mpi.py
+  - mpiexec -n $P $MPI_TEST_CMD $PWD/schwimmbad/tests/test_mpi_with_dill.py
   - $TEST_CMD
 
 after_success:
