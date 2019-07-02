@@ -45,29 +45,29 @@ def test_mpi():
 
 @pytest.mark.skip(True, reason="WTF")
 def test_mpi_with_dill():
-    with MPIPool(use_dill=True) as pool:
-        if not pool.is_master():
-            pool.wait()
-            sys.exit(0)
+    pool = MPIPool()
 
-        all_tasks = [[random.random() for i in range(1000)]]
+    pool.wait(lambda: sys.exit(0))
 
-        # test map alone
-        for tasks in all_tasks:
-            results = pool.map(_function, tasks)
-            for r1,r2 in zip(results, [_function(x) for x in tasks]):
-                assert isclose(r1, r2)
+    all_tasks = [[random.random() for i in range(1000)]]
 
-            assert len(results) == len(tasks)
+    # test map alone
+    for tasks in all_tasks:
+        results = pool.map(_function, tasks)
+        for r1, r2 in zip(results, [_function(x) for x in tasks]):
+            assert isclose(r1, r2)
 
-        # test map with callback
-        for tasks in all_tasks:
-            results = pool.map(_function, tasks, callback=_callback)
-            for r1,r2 in zip(results, [_function(x) for x in tasks]):
-                assert isclose(r1, r2)
+        assert len(results) == len(tasks)
 
-            assert len(results) == len(tasks)
+    # test map with callback
+    for tasks in all_tasks:
+        results = pool.map(_function, tasks, callback=_callback)
+        for r1, r2 in zip(results, [_function(x) for x in tasks]):
+            assert isclose(r1, r2)
 
+        assert len(results) == len(tasks)
+
+    pool.close()
 
 if __name__ == '__main__':
     test_mpi()
