@@ -11,7 +11,7 @@ import pytest
 
 # Use full imports so we can run this with mpiexec externally
 from schwimmbad.tests import TEST_MPI
-from schwimmbad.tests.test_pools import _function, _function2, isclose
+from schwimmbad.tests.test_pools import _function, isclose
 from schwimmbad.mpi import MPIPool, MPI
 
 def _callback(x):
@@ -53,16 +53,16 @@ def test_mpi_with_dill():
 
     # test map alone
     for tasks in all_tasks:
-        results = pool.map(_function2, tasks)
-        for r1,r2 in zip(results, [_function2(x) for x in tasks]):
+        results = pool.map(_function, tasks)
+        for r1,r2 in zip(results, [_function(x) for x in tasks]):
             assert isclose(r1, r2)
 
         assert len(results) == len(tasks)
 
     # test map with callback
     for tasks in all_tasks:
-        results = pool.map(_function2, tasks, callback=_callback)
-        for r1,r2 in zip(results, [_function2(x) for x in tasks]):
+        results = pool.map(_function, tasks, callback=_callback)
+        for r1,r2 in zip(results, [_function(x) for x in tasks]):
             assert isclose(r1, r2)
 
         assert len(results) == len(tasks)

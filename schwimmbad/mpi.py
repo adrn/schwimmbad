@@ -5,7 +5,11 @@ import dill
 # On some systems mpi4py is available but broken we avoid crashes by importing
 # it only when an MPI Pool is explicitly created.
 # Still make it a global to avoid messing up other things.
-MPI = None
+#MPI = None
+try:
+    from mpi4py import MPI
+except ImportError:
+    MPI = None
 
 # Project
 from . import log, _VERBOSE
@@ -16,17 +20,6 @@ __all__ = ['MPIPool']
 def _dummy_callback(x):
     pass
 
-def _import_mpi(quiet=False, use_dill=False):
-    global MPI
-    try:
-        from mpi4py import MPI as _MPI
-        if use_dill:
-            _MPI.pickle.__init__(dill.dumps, dill.loads, dill.HIGHEST_PROTOCOL)
-        MPI = _MPI
-    except ImportError:
-        if not quiet:
-            # Re-raise with a more user-friendly error:
-            raise ImportError("Please install mpi4py")
 
 class MPIPool(BasePool):
     """A processing pool that distributes tasks using MPI.
@@ -48,7 +41,11 @@ class MPIPool(BasePool):
     """
 
     def __init__(self, comm=None, use_dill=False):
-        _import_mpi(use_dill=use_dill)
+        if MPI is None:
+            raise ImportError("Please install mpi4py")
+
+        if use_dill:
+            MPI.pickle.__init__(dill.dumps, dill.loads, dill.HIGHEST_PROTOCOL)
 
         if comm is None:
             comm = MPI.COMM_WORLD
@@ -69,7 +66,7 @@ class MPIPool(BasePool):
     @staticmethod
     def enabled():
         if MPI is None:
-            _import_mpi(quiet=True)
+            raise ImportError("Please install mpi4py")
         if MPI is not None:
             if MPI.COMM_WORLD.size > 1:
                 return True
