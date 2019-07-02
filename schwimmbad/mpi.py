@@ -21,9 +21,7 @@ def _import_mpi(quiet=False, use_dill=False):
     try:
         from mpi4py import MPI as _MPI
         if use_dill:
-            pass
-            #_MPI.pickle.__init__(dill.dumps, dill.loads,
-        # dill.HIGHEST_PROTOCOL)
+            _MPI.pickle.__init__(dill.dumps, dill.loads, dill.HIGHEST_PROTOCOL)
         MPI = _MPI
     except ImportError:
         if not quiet:
