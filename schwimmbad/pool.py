@@ -2,9 +2,6 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 import abc
 
-# Third-party
-import six
-
 __all__ = ['BasePool']
 
 def _callback_wrapper(callback, generator):
@@ -12,8 +9,8 @@ def _callback_wrapper(callback, generator):
         callback(element)
         yield element
 
-@six.add_metaclass(abc.ABCMeta)
-class BasePool(object):
+
+class BasePool(metaclass=abc.ABCMeta):
     """ A base class multiprocessing pool with a ``map`` method. """
 
     def __init__(self, **kwargs):

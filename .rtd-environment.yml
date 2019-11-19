@@ -4,7 +4,6 @@ dependencies:
   - pytest
   - cython
   - mpi4py
-  - six
   - joblib
   - matplotlib
   - pip:

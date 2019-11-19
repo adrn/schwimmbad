@@ -34,7 +34,6 @@ before_install:
   - sh ci/travis/install-mpi.sh $MPI
 
 install:
-  - pip install six
   - pip install pytest
   - pip install pytest-cov
   - pip install cython

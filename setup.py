@@ -228,7 +228,6 @@ setup(
     long_description=rd("README.rst"),
     package_data={"": ["README.rst", "LICENSE"]},
     include_package_data=True,
-    install_requires=["six"],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",

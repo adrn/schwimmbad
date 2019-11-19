@@ -11,7 +11,7 @@ Dependencies
 ============
 
 For running in serial, or using Python's built-in `multiprocessing` module,
-`schwimmbad` only depends on ``six``.
+`schwimmbad` has no third-party dependencies.
 To run with MPI, you must have a compiled MPI library (e.g., `OpenMPI
 <https://www.open-mpi.org/>`_) and ``mpi4py``.
 To run with joblib, you must have ``joblib`` installed.
