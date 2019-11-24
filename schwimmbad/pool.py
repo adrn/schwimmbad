@@ -1,8 +1,8 @@
 # Standard library
-from __future__ import division, print_function, absolute_import, unicode_literals
 import abc
 
 __all__ = ['BasePool']
+
 
 def _callback_wrapper(callback, generator):
     for element in generator:
