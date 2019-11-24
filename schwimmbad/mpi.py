@@ -1,5 +1,7 @@
 # Standard library
-from __future__ import division, print_function, absolute_import, unicode_literals
+import atexit
+import sys
+import traceback
 
 # On some systems mpi4py is available but broken we avoid crashes by importing
 # it only when an MPI Pool is explicitly created.
@@ -12,8 +14,10 @@ from .pool import BasePool
 
 __all__ = ['MPIPool']
 
+
 def _dummy_callback(x):
     pass
+
 
 def _import_mpi(quiet=False, use_dill=False):
     global MPI
@@ -27,6 +31,9 @@ def _import_mpi(quiet=False, use_dill=False):
         if not quiet:
             # Re-raise with a more user-friendly error:
             raise ImportError("Please install mpi4py")
+
+    return MPI
+
 
 class MPIPool(BasePool):
     """A processing pool that distributes tasks using MPI.
@@ -48,7 +55,7 @@ class MPIPool(BasePool):
     """
 
     def __init__(self, comm=None, use_dill=False):
-        _import_mpi(use_dill=use_dill)
+        MPI = _import_mpi(use_dill=use_dill)
 
         if comm is None:
             comm = MPI.COMM_WORLD
@@ -56,9 +63,26 @@ class MPIPool(BasePool):
 
         self.master = 0
         self.rank = self.comm.Get_rank()
+
+        atexit.register(lambda: MPIPool.close(self))
+
+        if not self.is_master():
+            # workers branch here and wait for work
+            try:
+                self.wait()
+            except Exception:
+                print(f"worker with rank {self.rank} crashed".center(80, "="))
+                traceback.print_exc()
+                sys.stdout.flush()
+                sys.stderr.flush()
+                # shutdown all mpi tasks:
+                from mpi4py import MPI
+                MPI.COMM_WORLD.Abort()
+            finally:
+                sys.exit(0)
+
         self.workers = set(range(self.comm.size))
         self.workers.discard(self.master)
-
         self.size = self.comm.Get_size() - 1
 
         if self.size == 0:

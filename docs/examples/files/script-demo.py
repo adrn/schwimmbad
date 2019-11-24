@@ -1,8 +1,10 @@
 import math
 
+
 def worker(task):
     a, b = task
     return math.cos(a) + math.sin(b)
+
 
 def main(pool):
     # Here we generate some fake data
@@ -12,9 +14,9 @@ def main(pool):
 
     tasks = list(zip(a, b))
     results = pool.map(worker, tasks)
-    pool.close()
 
     # Now we could save or do something with the results object
+
 
 if __name__ == "__main__":
     import schwimmbad
@@ -32,3 +34,4 @@ if __name__ == "__main__":
 
     pool = schwimmbad.choose_pool(mpi=args.mpi, processes=args.n_cores)
     main(pool)
+    pool.close()
