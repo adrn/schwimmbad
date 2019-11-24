@@ -1,8 +1,8 @@
 The Schwimmbad
 ==============
 
-.. image:: http://img.shields.io/travis/adrn/schwimmbad/master.svg?style=flat
-    :target: http://travis-ci.org/adrn/schwimmbad
+.. image:: https://travis-ci.org/adrn/schwimmbad.svg?branch=master
+    :target: https://travis-ci.org/adrn/schwimmbad
 
 .. image:: http://img.shields.io/pypi/v/schwimmbad.svg?style=flat
     :target: https://pypi.python.org/pypi/schwimmbad/
