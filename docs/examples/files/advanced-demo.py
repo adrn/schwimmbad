@@ -1,5 +1,6 @@
 import schwimmbad
 
+
 class Worker(object):
 
     def __init__(self, output_path):
@@ -18,6 +19,7 @@ class Worker(object):
         a, b = task
         return self.work(a, b)
 
+
 def main(pool):
     worker = Worker('output_file.txt')
 
@@ -26,7 +28,6 @@ def main(pool):
     for r in pool.map(worker, tasks, callback=worker.callback):
         pass
 
-    pool.close()
 
 if __name__ == "__main__":
     from argparse import ArgumentParser
@@ -41,3 +42,4 @@ if __name__ == "__main__":
 
     pool = schwimmbad.choose_pool(mpi=args.mpi, processes=args.n_cores)
     main(pool)
+    pool.close()

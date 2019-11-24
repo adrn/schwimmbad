@@ -52,10 +52,6 @@ def choose_pool(mpi=False, processes=1, **kwargs):
             raise SystemError("Tried to run with MPI but MPIPool not enabled.")
 
         pool = MPIPool(**kwargs)
-        if not pool.is_master():
-            pool.wait()
-            sys.exit(0)
-
         log.info("Running with MPI on {0} cores".format(pool.size))
         return pool
 
