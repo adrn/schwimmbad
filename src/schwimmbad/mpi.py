@@ -10,8 +10,8 @@ import traceback
 # Still make it a global to avoid messing up other things.
 MPI = None
 
-# It seems like it's ok to import this even if not run with MPI
-from mpi4py.futures import MPIPoolExecutor
+# Filled in import_mpi below
+MPIPoolExecutor = object
 
 # Project
 from .pool import BasePool
@@ -23,6 +23,7 @@ def _dummy_callback(x):
 
 def _import_mpi(quiet=False, use_dill=False):
     global MPI
+    global MPIPoolExecutor
     try:
         from mpi4py import MPI as _MPI
 
