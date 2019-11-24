@@ -5,7 +5,7 @@ python:
   - 3.7
 
 os: linux
-dist: trusty
+dist: xenial
 sudo: required
 
 env:
@@ -20,7 +20,6 @@ env:
 matrix:
   include:
 
-    # Do a coverage test in Python 2.
     - python: 3.6
       env:
         - MPI=openmpi
