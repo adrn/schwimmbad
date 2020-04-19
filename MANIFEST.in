@@ -1,0 +1,15 @@
+include README.rst
+include LICENSE
+include setup.cfg
+include pyproject.toml
+
+recursive-include schwimmbad *
+recursive-include docs *
+
+prune build
+prune docs/_build
+prune docs/api
+prune docs/examples
+
+
+global-exclude *.pyc *.o
