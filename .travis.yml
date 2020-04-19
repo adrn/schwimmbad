@@ -3,6 +3,7 @@ language: python
 python:
   - 3.6
   - 3.7
+  - 3.8
 
 os: linux
 dist: xenial
@@ -12,7 +13,6 @@ env:
   global:
     - TEST_CMD='py.test'
     - MPI_TEST_CMD='python'
-    - the_world_is_flat=false
   matrix:
     - MPI=mpich
     - MPI=openmpi
