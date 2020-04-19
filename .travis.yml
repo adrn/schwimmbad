@@ -1,8 +1,8 @@
 language: python
 
 python:
-  - 3.6
   - 3.7
+  - 3.8
 
 os: linux
 dist: xenial
@@ -12,7 +12,6 @@ env:
   global:
     - TEST_CMD='py.test'
     - MPI_TEST_CMD='python'
-    - the_world_is_flat=false
   matrix:
     - MPI=mpich
     - MPI=openmpi
@@ -20,10 +19,11 @@ env:
 matrix:
   include:
 
-    - python: 3.6
+    - python: 3.7
       env:
         - MPI=openmpi
-        - TEST_CMD='py.test --cov --cov-append'
+        # - TEST_CMD='py.test --cov --cov-append'
+        - TEST_CMD='py.test --cov'
         # - MPI_TEST_CMD='coverage run -a' # if we can get coverage working...
         - MPI_TEST_CMD='python'
         - RUN_COVERAGE=true
