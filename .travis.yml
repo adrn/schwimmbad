@@ -1,7 +1,6 @@
 language: python
 
 python:
-  - 3.6
   - 3.7
   - 3.8
 
@@ -20,7 +19,7 @@ env:
 matrix:
   include:
 
-    - python: 3.6
+    - python: 3.7
       env:
         - MPI=openmpi
         - TEST_CMD='py.test --cov --cov-append'
