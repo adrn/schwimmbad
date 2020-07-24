@@ -10,7 +10,7 @@ import pytest
 
 # Use full imports so we can run this with mpiexec externally
 from schwimmbad.tests import TEST_MPI  # noqa
-from schwimmbad.tests.test_pools import _function, isclose
+from schwimmbad.tests.test_pools import _function, _batch_function, isclose
 from schwimmbad.mpi import MPIPool, MPI  # noqa
 
 
@@ -38,6 +38,11 @@ def test_mpi():
                 assert isclose(r1, r2)
 
             assert len(results) == len(tasks)
+
+        # test batched map
+        results = pool.batched_map(_batch_function, tasks)
+        for r in results:
+            assert all([isclose(x, 42.01) for x in r])
 
 
 if __name__ == '__main__':
