@@ -27,6 +27,10 @@ def test_batch_tasks():
     tasks = batch_tasks(10, arr=arr, args=(99,))
     assert len(tasks) == 10
 
+    arr = np.arange(100)
+    tasks = batch_tasks(10, arr=arr, include_idx=False)
+    assert np.all(tasks[0] == np.arange(10))
+
     tasks = batch_tasks(100, n_tasks=5)
     assert len(tasks) == 5
 

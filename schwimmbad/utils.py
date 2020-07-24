@@ -1,7 +1,8 @@
 __all__ = ['batch_tasks']
 
 
-def batch_tasks(n_batches, n_tasks=None, arr=None, args=None, start_idx=0):
+def batch_tasks(n_batches, n_tasks=None, arr=None, args=None, start_idx=0,
+                include_idx=True):
     """Split tasks into some number of batches to send out to workers.
 
     By default, returns index ranges that split the number of tasks into the
@@ -22,6 +23,9 @@ def batch_tasks(n_batches, n_tasks=None, arr=None, args=None, start_idx=0):
         Other arguments to add to each task.
     start_idx : int (optional)
         What index in the tasks to start from?
+    include_idx : bool (optional)
+        If passing an array in, this determines whether to include the indices
+        of each batch with each task.
     """
     if args is None:
         args = tuple()
@@ -57,14 +61,20 @@ def batch_tasks(n_batches, n_tasks=None, arr=None, args=None, start_idx=0):
     # Add args, possible slice input array:
     tasks = []
     for idx in indices:
+        if arr is not None and not args and not include_idx:
+            tasks.append(arr[idx[0]:idx[1]])
+            continue
+
         extra = list()
         if arr is not None:
             extra.append(arr[idx[0]:idx[1]])
         if args:
             extra.extend(args)
 
-        if extra:
+        if extra and include_idx:
             tasks.append(tuple([idx] + extra))
+        elif extra and not include_idx:
+            tasks.append(extra)
         else:
             tasks.append(idx)
 
