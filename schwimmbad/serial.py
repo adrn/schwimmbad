@@ -1,3 +1,6 @@
+# Standard library
+from itertools import starmap
+
 # Project
 from .pool import BasePool
 
@@ -47,3 +50,6 @@ class SerialPool(BasePool):
 
         """
         return self._call_callback(callback, map(func, iterable))
+
+    def starmap(self, func, iterable, callback=None):
+        return self._call_callback(callback, starmap(func, iterable))

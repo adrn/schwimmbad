@@ -25,7 +25,6 @@ matrix:
         # - TEST_CMD='py.test --cov --cov-append'
         - TEST_CMD='py.test --cov'
         # - MPI_TEST_CMD='coverage run -a' # if we can get coverage working...
-        - MPI_TEST_CMD='python'
         - RUN_COVERAGE=true
 
 before_install:
@@ -46,8 +45,9 @@ before_script:
   - if [[ "$MPI" == "mpich" ]]; then P=2; else P=5; fi
 
 script:
-  - mpiexec -n $P $MPI_TEST_CMD $PWD/schwimmbad/tests/test_mpi.py
-  - mpiexec -n $P $MPI_TEST_CMD $PWD/schwimmbad/tests/test_mpi_with_dill.py
+  - SCHWIMMBAD_TEST_MPI=1 mpiexec -n $P python $PWD/schwimmbad/tests/test_mpi.py
+  - SCHWIMMBAD_TEST_MPI=1 mpiexec -n $P python $PWD/schwimmbad/tests/test_mpi_with_dill.py
+  - SCHWIMMBAD_TEST_MPIASYNC=1 mpiexec -n $P python -m mpi4py.futures $PWD/schwimmbad/tests/test_mpi.py
   - $TEST_CMD
 
 after_success:

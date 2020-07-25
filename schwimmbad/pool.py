@@ -1,6 +1,9 @@
 # Standard library
 import abc
 
+# This package
+from .utils import batch_tasks
+
 __all__ = ['BasePool']
 
 
@@ -32,6 +35,10 @@ class BasePool(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def map(self, *args, **kwargs):
         return
+
+    def batched_map(self, worker, tasks, *args, **kwargs):
+        batches = batch_tasks(n_batches=self.size, arr=tasks)
+        return self.map(worker, batches, *args, **kwargs)
 
     def close(self):
         pass
