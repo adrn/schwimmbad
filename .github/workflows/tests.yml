@@ -1,0 +1,51 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, github-actions ]  # FIXME
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+        mpi-dist: ["openmpi", "mpich"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install OpenMPI
+      if: matrix.mpi-dist == 'openmpi'
+      run: sudo apt-get install -y -q openmpi-bin libopenmpi-dev
+    - name: Install MPICH
+      if: matrix.mpi-dist == 'mpich'
+      run: sudo apt-get install -y -q mpich libmpich-dev
+    - name: Install dependencies
+      run: |
+        python -m pip install -U pip
+        python -m pip install -e .[test]
+    - name: Test MPI
+      run: |
+        mpiexec -n 2 python $PWD/schwimmbad/tests/test_mpi.py
+        mpiexec -n 2 python $PWD/schwimmbad/tests/test_mpi_with_dill.py
+    - name: Unit tests
+      run: python -m pytest --cov schwimmbad
+    - name: Collect coverage results
+      uses: AndreMiras/coveralls-python-action@v20201129
+      with:
+        parallel: true
+        flag-name: ${{ matrix.python-version }}-${{ matrix.mpi-dist }}
+
+  coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Combine and upload coverage
+      uses: AndreMiras/coveralls-python-action@v20201129
+      with:
+        parallel-finished: true
