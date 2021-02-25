@@ -1,8 +1,8 @@
 The Schwimmbad
 ==============
 
-.. image:: https://travis-ci.org/adrn/schwimmbad.svg?branch=master
-    :target: https://travis-ci.org/adrn/schwimmbad
+.. image:: https://github.com/adrn/schwimmbad/actions/workflows/tests.yml/badge.svg
+    :target: https://github.com/adrn/schwimmbad/actions/workflows/tests.yml
 
 .. image:: http://img.shields.io/pypi/v/schwimmbad.svg?style=flat
     :target: https://pypi.python.org/pypi/schwimmbad/
@@ -65,7 +65,7 @@ If you use this software in a scientific publication, please cite the `JOSS
 License
 -------
 
-Copyright 2016-2017 Adrian Price-Whelan and contributors.
+Copyright 2016-2021 the contributors.
 
 schwimmbad is free software made available under the MIT License. For details
 see the LICENSE file.
