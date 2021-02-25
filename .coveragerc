@@ -6,3 +6,4 @@ omit =
 
 [run]
 parallel = True
+relative_files = True
