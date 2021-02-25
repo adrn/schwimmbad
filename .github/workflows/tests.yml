@@ -2,19 +2,17 @@ name: Tests
 
 on:
   push:
-    branches: [ main, github-actions ]  # FIXME
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
         mpi-dist: ["openmpi", "mpich"]
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -36,3 +34,17 @@ jobs:
         mpiexec -n 2 python $PWD/schwimmbad/tests/test_mpi.py
     - name: Unit tests
       run: python -m pytest --cov
+    - name: Collect coverage results
+      uses: AndreMiras/coveralls-python-action@v20201129
+      with:
+        parallel: true
+        flag-name: ${{ matrix.python-version }}-${{ matrix.mpi-dist }}
+
+  coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Combine and upload coverage
+      uses: AndreMiras/coveralls-python-action@v20201129
+      with:
+        parallel-finished: true
