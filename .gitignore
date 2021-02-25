@@ -7,3 +7,4 @@ build
 docs/_build
 .coverage
 .coverage.*
+version.py
