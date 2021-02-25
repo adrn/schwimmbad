@@ -34,7 +34,7 @@ jobs:
         mpiexec -n 2 python $PWD/schwimmbad/tests/test_mpi.py
         mpiexec -n 2 python $PWD/schwimmbad/tests/test_mpi_with_dill.py
     - name: Unit tests
-      run: python -m pytest --cov
+      run: python -m pytest --cov schwimmbad
     - name: Collect coverage results
       uses: AndreMiras/coveralls-python-action@v20201129
       with:
