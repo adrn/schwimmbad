@@ -22,10 +22,10 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install OpenMPI
-      if: matrix.mpi-dist == "openmpi"
+      if: ${{ matrix.mpi-dist == "openmpi" }}
       run: sudo apt-get install -y -q openmpi-bin libopenmpi-dev
     - name: Install MPICH
-      if: matrix.mpi-dist == "mpich"
+      if: ${{ matrix.mpi-dist == "mpich" }}
       run: sudo apt-get install -y -q mpich libmpich-dev
     - name: Install dependencies
       run: |
