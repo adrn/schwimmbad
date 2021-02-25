@@ -32,6 +32,7 @@ jobs:
     - name: Test MPI
       run: |
         mpiexec -n 2 python $PWD/schwimmbad/tests/test_mpi.py
+        mpiexec -n 2 python $PWD/schwimmbad/tests/test_mpi_with_dill.py
     - name: Unit tests
       run: python -m pytest --cov
     - name: Collect coverage results
