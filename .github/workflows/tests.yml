@@ -2,7 +2,7 @@ name: Tests
 
 on:
   push:
-    branches: [ main, github-actions ]  # FIXME
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
