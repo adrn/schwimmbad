@@ -126,7 +126,7 @@ class MPIPool(BasePool):
         if callback is not None:
             callback()
 
-    def map(self, worker, tasks, callback=None):
+    def map(self, worker, tasks, callback=None, tasklistback=True):
         """Evaluate a function or callable on each task in parallel using MPI.
 
         The callable, ``worker``, is called on each element of the ``tasks``
@@ -149,11 +149,14 @@ class MPIPool(BasePool):
             result from each worker run and is executed on the master process.
             This is useful for, e.g., saving results to a file, since the
             callback is only called on the master thread.
+        tasklistback : bool
+            An option to save memory in the parallel calculations.
 
         Returns
         -------
-        results : list
+        results : list 
             A list of results from the output of each ``worker()`` call.
+            If tasklistback = False, return [None] * len(tasklist)
         """
 
         # If not the master just wait for instructions.
@@ -193,7 +196,8 @@ class MPIPool(BasePool):
             callback(result)
 
             workerset.add(worker)
-            resultlist[taskid] = result
+            if tasklistback:
+                resultlist[taskid] = result
             pending -= 1
 
         return resultlist
