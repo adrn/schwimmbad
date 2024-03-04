@@ -1,13 +1,9 @@
 # das Schwimmbad
 
-[![image](https://github.com/adrn/schwimmbad/actions/workflows/tests.yml/badge.svg)](https://github.com/adrn/schwimmbad/actions/workflows/tests.yml)
-
+[![image](https://github.com/adrn/schwimmbad/actions/workflows/ci.yml/badge.svg)](https://github.com/adrn/schwimmbad/actions/workflows/ci.yml)
 [![image](http://img.shields.io/pypi/v/schwimmbad.svg?style=flat)](https://pypi.python.org/pypi/schwimmbad/)
-
 [![image](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/adrn/schwimmbad/blob/master/LICENSE)
-
 [![image](https://zenodo.org/badge/DOI/10.5281/zenodo.885577.svg)](https://zenodo.org/record/885577#.Wa9WVBZSy2w)
-
 [![image](http://joss.theoj.org/papers/10.21105/joss.00357/status.svg)](http://dx.doi.org/10.21105/joss.00357)
 
 `schwimmbad` provides a uniform interface to parallel processing pools and enables
