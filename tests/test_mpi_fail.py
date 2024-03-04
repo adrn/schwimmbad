@@ -1,3 +1,4 @@
+# type: ignore
 """
 I couldn't figure out how to get py.test and MPI to play nice together,
 so this is a script that tests the MPIPool
@@ -8,9 +9,10 @@ import random
 
 import pytest
 
+from schwimmbad.mpi import MPI, MPIPool  # noqa
+
 # Use full imports so we can run this with mpiexec externally
 from schwimmbad.tests import TEST_MPI  # noqa
-from schwimmbad.mpi import MPIPool, MPI  # noqa
 
 
 def worker_error(task):
@@ -24,5 +26,5 @@ def test_mpi_worker_error():
         pool.map(worker_error, tasks)  # should fail
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_mpi_worker_error()

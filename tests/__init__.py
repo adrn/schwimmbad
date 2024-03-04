@@ -1,6 +1,4 @@
+# type: ignore
 from schwimmbad.mpi import MPI
 
-if MPI is not None:
-    TEST_MPI = True
-else:
-    TEST_MPI = False
+TEST_MPI = MPI is not None

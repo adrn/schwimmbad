@@ -1,34 +1,16 @@
-# coding: utf-8
-"""
-Contributions by:
-- Peter K. G. Williams
-- Júlio Hoffimann Mendes
-- Dan Foreman-Mackey
+# type: ignore
+from typing import Any, Union
 
-Implementations of four different types of processing pools:
-
-    - MPIPool: An MPI pool.
-    - MultiPool: A multiprocessing for local parallelization.
-    - SerialPool: A serial pool, which uses the built-in ``map`` function
-
-"""
-import pkg_resources
-
-__version__ = pkg_resources.require(__package__)[0].version
-__author__ = "Adrian Price-Whelan <adrianmpw@gmail.com>"
-
-# Standard library
-import sys
-import logging
-log = logging.getLogger(__name__)
-_VERBOSE = 5
-
+from ._version import version as __version__
+from .jl import JoblibPool
+from .mpi import MPIPool
 from .multiprocessing import MultiPool
 from .serial import SerialPool
-from .mpi import MPIPool
-from .jl import JoblibPool
 
-def choose_pool(mpi=False, processes=1, **kwargs):
+
+def choose_pool(
+    mpi: bool = False, processes: int = 1, **kwargs: Any
+) -> Union[MPIPool, MultiPool, SerialPool]:
     """
     Choose between the different pools given options from, e.g., argparse.
 
@@ -48,17 +30,30 @@ def choose_pool(mpi=False, processes=1, **kwargs):
     """
 
     if mpi:
+        from .mpi import MPIPool
+
         if not MPIPool.enabled():
-            raise SystemError("Tried to run with MPI but MPIPool not enabled.")
+            msg = "Tried to run with MPI but MPIPool not enabled."
+            raise SystemError(msg)
 
-        pool = MPIPool(**kwargs)
-        log.info("Running with MPI on {0} cores".format(pool.size))
-        return pool
+        return MPIPool(**kwargs)
 
-    elif processes != 1 and MultiPool.enabled():
-        log.info("Running with MultiPool on {0} cores".format(processes))
+    if processes != 1 and MultiPool.enabled():
+        from .multiprocessing import MultiPool
+
         return MultiPool(processes=processes, **kwargs)
 
-    else:
-        log.info("Running with SerialPool")
-        return SerialPool(**kwargs)
+    from .serial import SerialPool
+
+    return SerialPool(**kwargs)
+
+
+__all__ = [
+    "__version__",
+    "choose_pool",
+    "JoblibPool",
+    "MPIPool",
+    "MultiPool",
+    "SerialPool",
+    "choose_pool",
+]

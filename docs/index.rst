@@ -51,7 +51,7 @@ so we call :class:`list` on this to get out the values.
 
 The above :func:`map` example executes the function in *serial* over each
 element in ``data``. That is, it just goes one by one through the ``data``
-object, executes the function, returns, and carries on, all on the same
+object, executes the function, returns, and cdataies on, all on the same
 processor core. If we can write our code in this style (using :func:`map`), we
 can easily swap in the ``Pool`` classes provided by ``schwimmbad`` to allow us
 to switch between various parallel processing frameworks. The easiest to

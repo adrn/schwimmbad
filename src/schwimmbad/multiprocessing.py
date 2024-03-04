@@ -1,10 +1,11 @@
-# Standard library
-import signal
+# type: ignore
 import functools
 import multiprocessing
+import signal
 from multiprocessing.pool import Pool
 
-__all__ = ['MultiPool']
+__all__ = ["MultiPool"]
+
 
 def _initializer_wrapper(actual_initializer, *rest):
     """
@@ -17,14 +18,15 @@ def _initializer_wrapper(actual_initializer, *rest):
     if actual_initializer is not None:
         actual_initializer(*rest)
 
-class CallbackWrapper(object):
 
+class CallbackWrapper:
     def __init__(self, callback):
         self.callback = callback
 
     def __call__(self, tasks):
         for task in tasks:
             self.callback(task)
+
 
 class MultiPool(Pool):
     """
@@ -48,12 +50,12 @@ class MultiPool(Pool):
         superclass.
 
     """
+
     wait_timeout = 3600
 
     def __init__(self, processes=None, initializer=None, initargs=(), **kwargs):
         new_initializer = functools.partial(_initializer_wrapper, initializer)
-        super(MultiPool, self).__init__(processes, new_initializer,
-                                        initargs, **kwargs)
+        super().__init__(processes, new_initializer, initargs, **kwargs)
         self.size = self._processes
 
     @staticmethod
@@ -90,15 +92,13 @@ class MultiPool(Pool):
 
         """
 
-        if callback is None:
-            callbackwrapper = None
-        else:
-            callbackwrapper = CallbackWrapper(callback)
+        callbackwrapper = CallbackWrapper(callback) if callback is not None else None
 
         # The key magic is that we must call r.get() with a timeout, because
         # a Condition.wait() without a timeout swallows KeyboardInterrupts.
-        r = self.map_async(func, iterable, chunksize=chunksize,
-                           callback=callbackwrapper)
+        r = self.map_async(
+            func, iterable, chunksize=chunksize, callback=callbackwrapper
+        )
 
         while True:
             try:
