@@ -27,7 +27,6 @@ test = [
   "pytest-astropy",
 ]
 docs = [
-  "schwimmbad[all]",
   "sphinx>=7.0",
   "sphinx_copybutton",
   "sphinx_autodoc_typehints",
