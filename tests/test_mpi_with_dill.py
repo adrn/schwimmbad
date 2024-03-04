@@ -8,18 +8,14 @@ so this is a script that tests the MPIPool
 import random
 import sys
 
-import pytest
-
+from schwimmbad._test_helpers import _function, isclose
 from schwimmbad.mpi import MPIPool
-
-from .test_pools import _function, isclose
 
 
 def _callback(x):
     pass
 
 
-@pytest.mark.skip(True, reason="WTF")
 def test_mpi_with_dill():
     pool = MPIPool(use_dill=True)
 
