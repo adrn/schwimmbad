@@ -13,12 +13,12 @@ readme = "README.md"
 license.file = "LICENSE"
 requires-python = ">=3.9"
 dynamic = ["version"]
-dependencies = ["dill"]
+dependencies = ["dill", "multiprocess"]
 
 [project.optional-dependencies]
 all = [
   "joblib",
-  "mpi4py",
+  "mpi4py"
 ]
 test = [
   "schwimmbad[all]",
@@ -27,7 +27,6 @@ test = [
   "pytest-astropy",
 ]
 docs = [
-  "schwimmbad[all]",
   "sphinx>=7.0",
   "sphinx_copybutton",
   "sphinx_autodoc_typehints",
