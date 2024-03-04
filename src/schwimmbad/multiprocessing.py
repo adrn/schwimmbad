@@ -1,8 +1,9 @@
 # type: ignore
 import functools
-import multiprocessing
 import signal
-from multiprocessing.pool import Pool
+
+import multiprocess
+from multiprocess.pool import Pool
 
 __all__ = ["MultiPool"]
 
@@ -30,10 +31,12 @@ class CallbackWrapper:
 
 class MultiPool(Pool):
     """
-    A modified version of :class:`multiprocessing.pool.Pool` that has better
+    A modified version of :class:`multiprocess.pool.Pool` that has better
     behavior with regard to ``KeyboardInterrupts`` in the :func:`map` method.
 
-    (Original author: `Peter K. G. Williams <peter@newton.cx>`_)
+    NOTE: This is no longer built off of the standard library
+    :class:`multiprocessing.pool.Pool` -- this uses the version from `multiprocess`,
+    which uses `dill` to pickle objects instead of the standard library `pickle`.
 
     Parameters
     ----------
@@ -46,8 +49,7 @@ class MultiPool(Pool):
         Arguments for ``initializer``; it will be called as
         ``initializer(*initargs)``.
     kwargs:
-        Extra arguments passed to the :class:`multiprocessing.pool.Pool`
-        superclass.
+        Extra arguments passed to the :class:`multiprocess.pool.Pool` superclass.
 
     """
 
@@ -104,7 +106,7 @@ class MultiPool(Pool):
             try:
                 return r.get(self.wait_timeout)
 
-            except multiprocessing.TimeoutError:
+            except multiprocess.TimeoutError:
                 pass
 
             except KeyboardInterrupt:
