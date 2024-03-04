@@ -9,10 +9,7 @@ import random
 
 import pytest
 
-from schwimmbad.mpi import MPI, MPIPool  # noqa
-
-# Use full imports so we can run this with mpiexec externally
-from schwimmbad.tests import TEST_MPI  # noqa
+from schwimmbad.mpi import MPIPool
 
 
 def worker_error(task):

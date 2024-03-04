@@ -8,7 +8,7 @@ except ImportError:
 
 import pytest
 
-from ..utils import batch_tasks
+from schwimmbad.utils import batch_tasks
 
 
 @pytest.mark.skipif(not has_numpy, reason="Numpy is required to run this test")

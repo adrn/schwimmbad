@@ -2,9 +2,7 @@
 import random
 import time
 
-from ..jl import JoblibPool
-from ..multiprocessing import MultiPool
-from ..serial import SerialPool
+from schwimmbad import JoblibPool, MultiPool, SerialPool
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
@@ -76,15 +74,15 @@ class PoolTestBase:
 
 
 class TestSerialPool(PoolTestBase):
-    def setup(self):
+    def setup_method(self):
         self.PoolClass = SerialPool
 
 
 class TestMultiPool(PoolTestBase):
-    def setup(self):
+    def setup_method(self):
         self.PoolClass = MultiPool
 
 
 class TestJoblibPool(PoolTestBase):
-    def setup(self):
+    def setup_method(self):
         self.PoolClass = JoblibPool

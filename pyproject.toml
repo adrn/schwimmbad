@@ -57,7 +57,9 @@ local_scheme = "no-local-version"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+addopts = [
+  "-ra", "--showlocals", "--strict-markers", "--strict-config", "--ignore-glob=*_mpi*"
+]
 xfail_strict = true
 filterwarnings = [
   "error",

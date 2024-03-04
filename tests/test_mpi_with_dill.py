@@ -10,11 +10,9 @@ import sys
 
 import pytest
 
-from schwimmbad.mpi import MPI, MPIPool  # noqa
+from schwimmbad.mpi import MPIPool
 
-# Use full imports so we can run this with mpiexec externally
-from schwimmbad.tests import TEST_MPI  # noqa
-from schwimmbad.tests.test_pools import _function, isclose
+from .test_pools import _function, isclose
 
 
 def _callback(x):
