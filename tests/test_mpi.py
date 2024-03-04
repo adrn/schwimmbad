@@ -1,3 +1,4 @@
+# type: ignore
 """
 I couldn't figure out how to get py.test and MPI to play nice together,
 so this is a script that tests the MPIPool
@@ -5,26 +6,15 @@ so this is a script that tests the MPIPool
 
 # Standard library
 import random
-import sys
 
-import pytest
-
-# Use full imports so we can run this with mpiexec externally
-from schwimmbad.tests import TEST_MPI  # noqa
-from schwimmbad.tests.test_pools import _function, isclose
-from schwimmbad.mpi import MPIPool, MPI  # noqa
+from schwimmbad._test_helpers import _batch_function, _function, isclose
 
 
 def _callback(x):
     pass
 
 
-@pytest.mark.skip(True, reason="WTF")
-def test_mpi_with_dill():
-    pool = MPIPool(use_dill=True)
-
-    pool.wait(lambda: sys.exit(0))
-
+def test_mpi(pool):
     all_tasks = [[random.random() for i in range(1000)]]
 
     # test map alone
@@ -43,8 +33,14 @@ def test_mpi_with_dill():
 
         assert len(results) == len(tasks)
 
-    pool.close()
+    # test batched map
+    results = pool.batched_map(_batch_function, tasks)
+    for r in results:
+        assert all([isclose(x, 42.01) for x in r])
 
 
-if __name__ == '__main__':
-    test_mpi_with_dill()
+if __name__ == "__main__":
+    from schwimmbad.mpi import MPIPool
+
+    with MPIPool() as pool:
+        test_mpi(pool)

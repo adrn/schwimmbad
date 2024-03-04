@@ -1,4 +1,6 @@
-# Standard library
+# type: ignore
+__all__ = ["MPIPool", "MPI"]
+
 import atexit
 import sys
 import traceback
@@ -9,10 +11,7 @@ import traceback
 MPI = None
 
 # Project
-from . import log, _VERBOSE
 from .pool import BasePool
-
-__all__ = ['MPIPool']
 
 
 def _dummy_callback(x):
@@ -23,8 +22,10 @@ def _import_mpi(quiet=False, use_dill=False):
     global MPI
     try:
         from mpi4py import MPI as _MPI
+
         if use_dill:
             import dill
+
             _MPI.pickle.__init__(dill.dumps, dill.loads, dill.HIGHEST_PROTOCOL)
         MPI = _MPI
     except ImportError:
@@ -71,12 +72,12 @@ class MPIPool(BasePool):
             try:
                 self.wait()
             except Exception:
-                print(f"worker with rank {self.rank} crashed".center(80, "="))
                 traceback.print_exc()
                 sys.stdout.flush()
                 sys.stderr.flush()
                 # shutdown all mpi tasks:
                 from mpi4py import MPI
+
                 MPI.COMM_WORLD.Abort()
             finally:
                 sys.exit(0)
@@ -86,17 +87,18 @@ class MPIPool(BasePool):
         self.size = self.comm.Get_size() - 1
 
         if self.size == 0:
-            raise ValueError("Tried to create an MPI pool, but there "
-                             "was only one MPI process available. "
-                             "Need at least two.")
+            msg = (
+                "Tried to create an MPI pool, but there was only one MPI process "
+                "available. Need at least two."
+            )
+            raise ValueError(msg)
 
     @staticmethod
     def enabled():
         if MPI is None:
             _import_mpi(quiet=True)
-        if MPI is not None:
-            if MPI.COMM_WORLD.size > 1:
-                return True
+        if MPI is not None and MPI.COMM_WORLD.size > 1:
+            return True
         return False
 
     def wait(self, callback=None):
@@ -107,26 +109,17 @@ class MPIPool(BasePool):
         if self.is_master():
             return
 
-        worker = self.comm.rank
+        # worker = self.comm.rank
         status = MPI.Status()
         while True:
-            log.log(_VERBOSE, "Worker {0} waiting for task".format(worker))
-
-            task = self.comm.recv(source=self.master, tag=MPI.ANY_TAG,
-                                  status=status)
+            task = self.comm.recv(source=self.master, tag=MPI.ANY_TAG, status=status)
 
             if task is None:
-                log.log(_VERBOSE, "Worker {0} told to quit work".format(worker))
                 break
 
             func, arg = task
-            log.log(_VERBOSE, "Worker {0} got task {1} with tag {2}"
-                    .format(worker, arg, status.tag))
 
             result = func(arg)
-
-            log.log(_VERBOSE, "Worker {0} sending answer {1} with tag {2}"
-                    .format(worker, result, status.tag))
 
             self.comm.ssend(result, self.master, status.tag)
 
@@ -166,7 +159,7 @@ class MPIPool(BasePool):
         # If not the master just wait for instructions.
         if not self.is_master():
             self.wait()
-            return
+            return None
 
         if callback is None:
             callback = _dummy_callback
@@ -180,8 +173,7 @@ class MPIPool(BasePool):
             if workerset and tasklist:
                 worker = workerset.pop()
                 taskid, task = tasklist.pop()
-                log.log(_VERBOSE, "Sent task %s to worker %s with tag %s",
-                        task[1], worker, taskid)
+
                 self.comm.send(task, dest=worker, tag=taskid)
 
             if tasklist:
@@ -192,12 +184,11 @@ class MPIPool(BasePool):
                 self.comm.Probe(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG)
 
             status = MPI.Status()
-            result = self.comm.recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG,
-                                    status=status)
+            result = self.comm.recv(
+                source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG, status=status
+            )
             worker = status.source
             taskid = status.tag
-            log.log(_VERBOSE, "Master received from worker %s with tag %s",
-                    worker, taskid)
 
             callback(result)
 
@@ -208,7 +199,7 @@ class MPIPool(BasePool):
         return resultlist
 
     def close(self):
-        """ Tell all the workers to quit."""
+        """Tell all the workers to quit."""
         if self.is_worker():
             return
 

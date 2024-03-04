@@ -1,12 +1,23 @@
-__all__ = ['batch_tasks']
+# type: ignore
+__all__ = ["batch_tasks"]
 
 
-def batch_tasks(n_batches, n_tasks=None, arr=None, args=None, start_idx=0,
-                include_idx=True):
+from .decorators import deprecated_renamed_argument
+
+
+@deprecated_renamed_argument("arr", "data", since="v0.4")
+def batch_tasks(
+    n_batches,
+    n_tasks=None,
+    data=None,
+    args=(),
+    start_idx=0,
+    include_idx=True,
+):
     """Split tasks into some number of batches to send out to workers.
 
     By default, returns index ranges that split the number of tasks into the
-    specified number of batches. If an array is passed in via ``arr``, it splits
+    specified number of batches. If an array is passed in via ``data``, it splits
     the array directly along ``axis=0`` into the specified number of batches.
 
     Parameters
@@ -16,7 +27,7 @@ def batch_tasks(n_batches, n_tasks=None, arr=None, args=None, start_idx=0,
         ``n_batches=pool.size`` for equal sharing amongst MPI workers.
     n_tasks : int (optional)
         The total number of tasks to divide.
-    arr : iterable (optional)
+    data : iterable, list, array-like (optional)
         Instead of returning indices that specify the batches, you can also
         directly split an array into batches.
     args : iterable (optional)
@@ -27,18 +38,22 @@ def batch_tasks(n_batches, n_tasks=None, arr=None, args=None, start_idx=0,
         If passing an array in, this determines whether to include the indices
         of each batch with each task.
     """
-    if args is None:
-        args = tuple()
     args = tuple(args)
 
-    if ((n_tasks is None and arr is None) or
-            (n_tasks is not None and arr is not None)):
-        raise ValueError("you must pass one of n_tasks or arr (not both)")
-    elif n_tasks is None:
-        n_tasks = len(arr)
+    if (n_tasks is None and data is None) or (n_tasks is not None and data is not None):
+        msg = "you must pass one of n_tasks or data (not both)"
+        raise ValueError(msg)
+
+    if data is not None:
+        data = list(data)
+
+    # Case where data is None is covered above
+    if n_tasks is None and data is not None:
+        n_tasks = len(data)
 
     if n_batches <= 0 or n_tasks <= 0:
-        raise ValueError("n_batches and n_tasks must be > 0")
+        msg = "n_batches and n_tasks must be > 0"
+        raise ValueError(msg)
 
     if n_batches > n_tasks:
         # TODO: add a warning?
@@ -61,13 +76,13 @@ def batch_tasks(n_batches, n_tasks=None, arr=None, args=None, start_idx=0,
     # Add args, possible slice input array:
     tasks = []
     for idx in indices:
-        if arr is not None and not args and not include_idx:
-            tasks.append(arr[idx[0]:idx[1]])
+        if data is not None and not args and not include_idx:
+            tasks.append(data[idx[0] : idx[1]])
             continue
 
         extra = list()
-        if arr is not None:
-            extra.append(arr[idx[0]:idx[1]])
+        if data is not None:
+            extra.append(data[idx[0] : idx[1]])
         if args:
             extra.extend(args)
 

@@ -1,7 +1,8 @@
-# Project
+# type: ignore
 from .pool import BasePool
 
-__all__ = ['SerialPool']
+__all__ = ["SerialPool"]
+
 
 class SerialPool(BasePool):
     """A serial pool that wraps the built-in :func:`map` function.
@@ -12,7 +13,7 @@ class SerialPool(BasePool):
 
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **_):
         self.size = 0
         self.rank = 0
 

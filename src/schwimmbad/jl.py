@@ -1,3 +1,4 @@
+# type: ignore
 try:
     from joblib import Parallel, delayed
 except ImportError:
@@ -6,6 +7,7 @@ except ImportError:
 from .pool import BasePool
 
 __all__ = ["JoblibPool"]
+
 
 class JoblibPool(BasePool):
     """A processing pool that distributes tasks using ``joblib.Parallel``.
@@ -20,7 +22,8 @@ class JoblibPool(BasePool):
 
     def __init__(self, *args, **kwargs):
         if Parallel is None:
-            raise ImportError("joblib is required to use the JoblibPool")
+            msg = "joblib is required to use the JoblibPool"
+            raise ImportError(msg)
         self.args = args
         self.kwargs = kwargs
         self.size = 0
@@ -32,7 +35,5 @@ class JoblibPool(BasePool):
 
     def map(self, func, iterable, callback=None):
         dfunc = delayed(func)
-        res = Parallel(*(self.args), **(self.kwargs))(
-            dfunc(a) for a in iterable
-        )
+        res = Parallel(*(self.args), **(self.kwargs))(dfunc(a) for a in iterable)
         return self._call_callback(callback, res)

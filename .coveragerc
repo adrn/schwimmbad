@@ -1,9 +1,0 @@
-[report]
-omit =
-   schwimmbad/error.py
-   */python?.?/*
-   */site-packages/*
-
-[run]
-parallel = True
-relative_files = True
