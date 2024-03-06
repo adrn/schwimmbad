@@ -8,6 +8,7 @@ except ImportError:
 
 import pytest
 
+from schwimmbad import choose_pool
 from schwimmbad.utils import batch_tasks
 
 
@@ -44,3 +45,11 @@ def test_batch_tasks():
 
     with pytest.raises(ValueError):
         batch_tasks(100, n_tasks=100, data=data[:100])
+
+
+@pytest.mark.parametrize(
+    "kwargs", [{"mpi": False, "processes": 1}, {"mpi": False, "processes": 2}]
+)
+def test_choose_pool(kwargs):
+    with choose_pool(**kwargs) as pool:
+        pool.map(lambda x: x, range(10))
