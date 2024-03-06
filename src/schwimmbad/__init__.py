@@ -30,8 +30,6 @@ def choose_pool(
     """
 
     if mpi:
-        from .mpi import MPIPool
-
         if not MPIPool.enabled():
             msg = "Tried to run with MPI but MPIPool not enabled."
             raise SystemError(msg)
@@ -39,11 +37,7 @@ def choose_pool(
         return MPIPool(**kwargs)
 
     if processes != 1 and MultiPool.enabled():
-        from .multiprocessing import MultiPool
-
         return MultiPool(processes=processes, **kwargs)
-
-    from .serial import SerialPool
 
     return SerialPool(**kwargs)
 
