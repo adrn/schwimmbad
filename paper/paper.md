@@ -26,7 +26,7 @@ Many scientific and computing problems require doing some calculation on all
 elements of some data set. If the calculations can be executed in parallel
 (i.e. without any communication between calculations), these problems are said
 to be [*perfectly
-parallel*](https://en.wikipedia.org/wiki/Embdataassingly_parallel). On computers
+parallel*](https://en.wikipedia.org/wiki/Embarrassingly_parallel). On computers
 with multiple processing cores, these tasks can be distributed and executed in
 parallel to greatly improve performance. A common paradigm for handling these
 distributed computing problems is to use a processing "pool": the "tasks" (the
