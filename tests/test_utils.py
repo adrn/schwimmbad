@@ -25,7 +25,7 @@ def test_batch_tasks():
     tasks = batch_tasks(10, n_tasks=101, args=(99,))
     assert len(tasks) == 10
 
-    # With dataay specified
+    # With data specified
     data = np.random.random(size=123)
     tasks = batch_tasks(10, data=data, args=(99,))
     assert len(tasks) == 10
