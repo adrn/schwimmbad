@@ -121,7 +121,7 @@ class MPIPool(BasePool):
 
             result = func(arg)
 
-            self.comm.ssend(result, self.master, status.tag)
+            self.comm.send(result, self.master, status.tag)
 
         if callback is not None:
             callback()
