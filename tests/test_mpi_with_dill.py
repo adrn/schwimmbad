@@ -41,6 +41,8 @@ def test_mpi_with_dill():
 
     pool.close()
 
+    print("All tests passed")
+
 
 if __name__ == "__main__":
     test_mpi_with_dill()
