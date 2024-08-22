@@ -38,6 +38,8 @@ def test_mpi(pool):
     for r in results:
         assert all([isclose(x, 42.01) for x in r])
 
+    print("All tests passed")
+
 
 if __name__ == "__main__":
     from schwimmbad.mpi import MPIPool
