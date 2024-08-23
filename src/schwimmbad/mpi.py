@@ -150,13 +150,16 @@ class MPIPool(BasePool):
             This is useful for, e.g., saving results to a file, since the
             callback is only called on the master thread.
         return_results : bool, optional
-            An option to disable returning the full result list, which can save memory usage in the parallel calculations when large results are returned.
+            An option to disable returning the full result list, which can save memory
+            usage in the parallel calculations when large results are returned. This is
+            useful if you need to call a callback function on each result and don't need
+            to store the results in memory.
 
         Returns
         -------
-        results : list 
+        results : list
             A list of results from the output of each ``worker()`` call.
-            But if `return_results = False`, this function returns `None`. 
+            But if `return_results = False`, this function returns `None`.
         """
 
         # If not the master just wait for instructions.
@@ -202,8 +205,7 @@ class MPIPool(BasePool):
 
         if return_results:
             return resultlist
-        else:
-            return None
+        return None
 
     def close(self):
         """Tell all the workers to quit."""
