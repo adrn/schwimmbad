@@ -13,7 +13,7 @@ class PoolTestBase:
         pool.close()
 
     def _make_pool(self):
-        return self.PoolClass()
+        return self.PoolClass(**self.pool_kwargs)
 
     def test_map(self):
         pool = self._make_pool()
@@ -52,13 +52,21 @@ class PoolTestBase:
 class TestSerialPool(PoolTestBase):
     def setup_method(self):
         self.PoolClass = SerialPool
+        self.pool_kwargs = dict()
 
 
 class TestMultiPool(PoolTestBase):
     def setup_method(self):
         self.PoolClass = MultiPool
+        self.pool_kwargs = dict()
 
+class TestMultiPoolWithBadKwargs(PoolTestBase):
+    def setup_method(self):
+        self.PoolClass = MultiPool
+        self.pool_kwargs = {'use_dill' : True}
 
 class TestJoblibPool(PoolTestBase):
     def setup_method(self):
         self.PoolClass = JoblibPool
+        self.pool_kwargs = dict()
+    
