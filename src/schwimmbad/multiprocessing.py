@@ -1,6 +1,7 @@
 # type: ignore
 import functools
 import signal
+import inspect
 
 import multiprocess
 from multiprocess.pool import Pool
@@ -57,7 +58,13 @@ class MultiPool(Pool):
 
     def __init__(self, processes=None, initializer=None, initargs=(), **kwargs):
         new_initializer = functools.partial(_initializer_wrapper, initializer)
-        super().__init__(processes, new_initializer, initargs, **kwargs)
+        
+        #filter kwargs passed here to only ones that multiprocess.pool recognizes        
+        sig = inspect.signature(Pool)
+        allowed_super_kwargs = [arg.name for arg in sig.parameters.values() if arg.kind==arg.KEYWORD_ONLY]
+        super_kwargs = {key:kwargs[key] for key in allowed_super_kwargs}
+        
+        super().__init__(processes, new_initializer, initargs, **super_kwargs)
         self.size = self._processes
 
     @staticmethod
